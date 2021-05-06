@@ -86,7 +86,7 @@ class AccountExternalInvoice(models.Model):
                 limit=1,
             )
             type_identification = False
-            if current_country.code == 'EC':
+            if current_country.code == "EC":
                 if len(rec.partner_vat) == 10:
                     type_identification = it_cedula.id
                 elif len(rec.partner_vat) == 13:
@@ -100,7 +100,7 @@ class AccountExternalInvoice(models.Model):
                 "phone": rec.partner_phone,
                 "email": rec.partner_email,
                 "country_id": current_country.id,
-                'l10n_latam_identification_type_id': type_identification,
+                "l10n_latam_identification_type_id": type_identification,
             }
             current_partner = partner_model.search(
                 [
@@ -113,9 +113,11 @@ class AccountExternalInvoice(models.Model):
                 current_partner = partner_model.create(partner_data)
             if not rec.partner_id:
                 rec.partner_id = current_partner.id
-            default_product = product_model.search([
-                ('default_code', '=', rec.product_code),
-            ])
+            default_product = product_model.search(
+                [
+                    ("default_code", "=", rec.product_code),
+                ]
+            )
             if not default_product.property_account_income_id:
                 raise UserError(_("You must configure income account in product %s") % (default_product.display_name))
             default_printer = self.env.user.get_default_point_of_emission()["default_printer_default_id"]
