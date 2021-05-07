@@ -25,8 +25,9 @@ class AccountExternalInvoice(models.Model):
     product_price_unit = fields.Float(string="Product Code", readonly=True, required=False)
     external_reference = fields.Char(string="External reference", readonly=True, required=False)
     payment_amount = fields.Float(string="Payment amount", readonly=True, required=False)
-    invoice_id = fields.Many2one(comodel_name="account.move", readonly=True, string="Invoice", required=False)
+    contract_id = fields.Many2one(comodel_name="contract.contract", readonly=True, string="Contract", required=False)
     partner_id = fields.Many2one(comodel_name="res.partner", readonly=True, string="Partner", required=False)
+    product_id = fields.Many2one(comodel_name="product.product", readonly=True, string="Product", required=False)
 
     def name_get(self):
         res = []
@@ -47,7 +48,7 @@ class AccountExternalInvoice(models.Model):
                     ("external_reference", "=", data.get("external_reference")),
                 ]
             )
-            invoice_data = {
+            rec_data = {
                 "partner_name": data.get("partner_name"),
                 "partner_vat": data.get("partner_vat"),
                 "partner_street": data.get("partner_street"),
@@ -61,15 +62,15 @@ class AccountExternalInvoice(models.Model):
                 "payment_amount": data.get("payment_amount"),
             }
             if current_rec:
-                if not current_rec.invoice_id:
-                    current_rec.sudo().write(invoice_data)
+                if not current_rec.contract_id:
+                    current_rec.sudo().write(rec_data)
             else:
-                current_rec = self.sudo().create([invoice_data])
+                current_rec = self.sudo().create([rec_data])
             res["id"] = current_rec.id
         return res
 
-    def action_create_invoice(self):
-        invoice_model = self.env["account.move"].sudo()
+    def action_create_contract(self):
+        contract_model = self.env["contract.contract"]
         product_model = self.env["product.product"].sudo()
         partner_model = self.env["res.partner"].sudo()
         country_model = self.env["res.country"].sudo()
@@ -118,61 +119,40 @@ class AccountExternalInvoice(models.Model):
                     ("default_code", "=", rec.product_code),
                 ]
             )
-            if not default_product.property_account_income_id:
-                raise UserError(_("You must configure income account in product %s") % (default_product.display_name))
-            default_printer = self.env.user.get_default_point_of_emission()["default_printer_default_id"]
-            if not rec.invoice_id:
-                journal = invoice_model.with_context(default_type="out_invoice")._get_default_journal()
-                # CHECK ME? me pasa el valor incluido iva siempre?
-                price_unit = rec.product_price_unit
-                if default_product.taxes_id:
-                    price_unit = rec.payment_amount / (1 + (default_product.taxes_id[0].amount / 100.0))
-                (
-                    next_number,
-                    auth_line,
-                ) = default_printer.get_next_value_sequence("out_invoice", False, False)
-                invoice_data = {
-                    "ref": rec.external_reference or "",
-                    "type": "out_invoice",
-                    "partner_id": rec.partner_id.id,
-                    "journal_id": journal.id,
-                    "invoice_origin": rec.external_reference,
-                    "invoice_line_ids": [
-                        (
-                            0,
-                            0,
-                            {
-                                "name": default_product.display_name,
-                                "product_id": default_product.id,
-                                "product_uom_id": default_product.uom_id.id,
-                                "quantity": rec.product_quantity,
-                                "price_unit": price_unit,
-                                "tax_ids": default_product.taxes_id and [(6, 0, default_product.taxes_id.ids)] or [],
-                            },
-                        )
-                    ],
-                    "company_id": self.env.company.id,
-                    "l10n_ec_point_of_emission_id": default_printer.id,
-                    "l10n_latam_document_number": next_number,
-                    "l10n_ec_authorization_line_id": auth_line.id,
-                    "l10n_ec_type_emission": default_printer.type_emission,
-                }
-                new_invoice = invoice_model.with_context(default_type="out_invoice").create(invoice_data)
-                rec.invoice_id = new_invoice.id
-                new_invoice.message_post_with_view(
-                    "mail.message_origin_link",
-                    values={"self": new_invoice, "origin": rec},
-                    subtype_id=self.env.ref("mail.mt_note").id,
+            if not default_product:
+                raise UserError(_("Can't find product with code %s") % (rec.product_code))
+            if not rec.contract_id:
+                contract_data = contract_model.default_get([])
+                contract_data.update(
+                    {
+                        "partner_id": rec.partner_id.id,
+                        "invoice_partner_id": rec.partner_id.id,
+                        "contract_line_fixed_ids": [
+                            (
+                                0,
+                                0,
+                                {
+                                    "product_id": rec.product_id.id,
+                                    "name": ("%s #START# - #END#" % rec.product_id.display_name),
+                                    "quantity": rec.quantity,
+                                    "uom_id": rec.product_id.uom_id.id,
+                                    "specific_price": rec.product_price_unit,
+                                    "price_unit": rec.product_price_unit,
+                                },
+                            )
+                        ],
+                    }
                 )
-                new_invoice.action_post()
+                rec.contract_id = contract_model.create(contract_data).id
+                rec.contract_id._recurring_create_invoice(fields.Date.today())
         return True
 
     @api.model
     def action_cron_generate_invoices(self):
-        pending_invoices = self.search([("invoice_id", "=", False)])
+        pending_invoices = self.search([("contract_id", "=", False)])
         if pending_invoices:
             for external_invoice in pending_invoices:
                 try:
-                    external_invoice.action_create_invoice()
+                    external_invoice.action_create_contract()
                 except Exception as e:
-                    _logger.debug(_("Error creating invoice: %s: %s") % (external_invoice.display_name, str(e)))
+                    _logger.debug(_("Error creating contract: %s: %s") % (external_invoice.display_name, str(e)))

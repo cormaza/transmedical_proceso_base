@@ -13,7 +13,11 @@
                 >
                     <field name="external_reference" />
                     <field name="partner_id" />
-                    <field name="invoice_id" />
+                    <field name="product_id" />
+                    <field name="product_code" optional="hide" />
+                    <field name="product_price_unit" optional="hide" />
+                    <field name="product_quantity" optional="hide" />
+                    <field name="contract_id" />
                     <field name="partner_name" optional="hide" />
                     <field name="partner_vat" optional="hide" />
                     <field name="partner_street" optional="hide" />
@@ -36,18 +40,19 @@
                 >
                     <header>
                         <button
-                            name="action_create_invoice"
-                            string="Create Invoice"
+                            name="action_create_contract"
+                            string="Create Contract"
                             class="oe_highlight"
                             type="object"
-                            attrs="{'invisible': [('invoice_id', '!=', False)]}"
+                            attrs="{'invisible': [('contract_id', '!=', False)]}"
                         />
                     </header>
                     <sheet>
                         <group>
                             <field name="external_reference" />
                             <field name="partner_id" />
-                            <field name="invoice_id" />
+                            <field name="contract_id" />
+                            <field name="product_id" />
                         </group>
                         <group>
                             <field name="partner_name" />
@@ -57,6 +62,11 @@
                             <field name="partner_email" />
                             <field name="partner_country" />
                             <field name="payment_amount" />
+                        </group>
+                        <group>
+                            <field name="product_code" />
+                            <field name="product_price_unit" />
+                            <field name="product_quantity" />
                         </group>
                     </sheet>
                     <div class="oe_chatter">
@@ -78,11 +88,11 @@
                 <search string="">
                     <field name="external_reference" />
                     <field name="partner_id" />
-                    <field name="invoice_id" />
+                    <field name="contract_id" />
                     <filter
                         name="no_invoiced"
-                        string="No invoiced"
-                        domain="[('invoice_id', '=', False)]"
+                        string="No ccontract"
+                        domain="[('contract_id', '=', False)]"
                     />
                 </search>
             </field>

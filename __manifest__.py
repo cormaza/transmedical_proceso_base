@@ -16,6 +16,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "data/cron_jobs.xml",
         "views/external_invoice_view.xml",
     ],
     "demo": [],
