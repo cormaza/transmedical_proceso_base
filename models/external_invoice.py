@@ -32,7 +32,9 @@ class AccountExternalInvoice(models.Model):
     def name_get(self):
         res = []
         for r in self:
-            name = "{} ({}) {}".format(r.external_reference, r.payment_amount, r.partner_id.display_name)
+            name = "{} ({}) {}".format(
+                r.external_reference, round(r.product_price_unit * r.product_quantity, 2), r.partner_id.display_name
+            )
             res.append((r.id, name))
         return res
 
@@ -147,7 +149,15 @@ class AccountExternalInvoice(models.Model):
                     }
                 )
                 rec.contract_id = contract_model.create(contract_data).id
-                rec.contract_id._recurring_create_invoice(fields.Date.today())
+                new_invoices = rec.contract_id._recurring_create_invoice(fields.Date.today())
+                if new_invoices:
+                    for new_invoice in new_invoices:
+                        new_invoice.message_post_with_view(
+                            "mail.message_origin_link",
+                            values={"self": new_invoice, "origin": rec},
+                            subtype_id=self.env.ref("mail.mt_note").id,
+                        )
+                        new_invoice.action_post()
         return True
 
     @api.model
