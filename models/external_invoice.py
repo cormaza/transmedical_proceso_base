@@ -117,8 +117,11 @@ class AccountExternalInvoice(models.Model):
             default_product = product_model.search(
                 [
                     ("default_code", "=", rec.product_code),
-                ]
+                ],
+                limit=1,
             )
+            if default_product:
+                rec.product_id = default_product.id
             if not default_product:
                 raise UserError(_("Can't find product with code %s") % (rec.product_code))
             if not rec.contract_id:
@@ -134,7 +137,7 @@ class AccountExternalInvoice(models.Model):
                                 {
                                     "product_id": rec.product_id.id,
                                     "name": ("%s #START# - #END#" % rec.product_id.display_name),
-                                    "quantity": rec.quantity,
+                                    "quantity": rec.product_quantity,
                                     "uom_id": rec.product_id.uom_id.id,
                                     "specific_price": rec.product_price_unit,
                                     "price_unit": rec.product_price_unit,
