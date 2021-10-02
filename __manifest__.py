@@ -16,7 +16,13 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/groups.xml",
         "data/cron_jobs.xml",
+        "data/sequence_data.xml",
+        "views/root_menu.xml",
+        "views/medical_liquidation_view.xml",
+        "views/medical_attention_order_view.xml",
+        "views/partner_view.xml",
         "views/external_invoice_view.xml",
     ],
     "demo": [],

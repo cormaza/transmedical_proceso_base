@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="medical_attention_order_view_tree" model="ir.ui.view">
+            <field name="name">medical_attention_order_view_tree</field>
+            <field name="model">medical.attention.order</field>
+            <field name="arch" type="xml">
+                <tree string="medical_attention_order_tree">
+                    <field name="company_id" />
+                    <field name="number" />
+                    <field name="issue_date" />
+                    <field name="partner_id" />
+                    <field name="supplier_id" />
+                    <field name="state" />
+                    <field name="liquidation_id" />
+                </tree>
+            </field>
+        </record>
+        <record id="medical_attention_order_view_form" model="ir.ui.view">
+            <field name="name">medical_attention_order_view_form</field>
+            <field name="model">medical.attention.order</field>
+            <field name="arch" type="xml">
+                <form string="Medical Attention Order">
+                    <header>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,approved,liquidated"
+                            statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"
+                        />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="expense_button_box">
+
+                        </div>
+                        <div class="oe_title">
+                            <label for="number" class="oe_edit_only" />
+                            <h1>
+                                <field
+                                    name="number"
+                                    placeholder="New Attention Order"
+                                />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" />
+                                <field name="supplier_id" />
+                            </group>
+                            <group>
+                                <field
+                                    name="company_id"
+                                    groups="base.group_multi_company"
+                                />
+                                <field name="issue_date" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="medical_attention_order_view_search" model="ir.ui.view">
+            <field name="name">medical.attention.order.view.search</field>
+            <field name="model">medical.attention.order</field>
+            <field name="arch" type="xml">
+                <search string="Medical Attention Order">
+                    <field name="partner_id" />
+                    <field name="supplier_id" />
+                    <field name="number" />
+                </search>
+            </field>
+        </record>
+        <record id="medical_attention_order_tree_action" model="ir.actions.act_window">
+            <field name="name">Medical Attention Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.attention.order</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="menu_medical_attention_order_tree_action"
+            name="Medical Attention Order"
+            parent="menu_transmedical_operations"
+            action="medical_attention_order_tree_action"
+            sequence="10"
+        />
+    </data>
+</odoo>

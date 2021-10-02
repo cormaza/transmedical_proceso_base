@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="medical_liquidation_view_tree" model="ir.ui.view">
+            <field name="name">medical_liquidation_view_tree</field>
+            <field name="model">medical.liquidation</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Liquidations">
+                    <field name="company_id" groups="base.group_multi_company" />
+                    <field name="number" />
+                    <field name="issue_date" />
+                    <field name="partner_id" />
+                    <field name="supplier_id" />
+                    <field name="liquidation_type" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        <record id="medical_liquidation_view_form" model="ir.ui.view">
+            <field name="name">medical_liquidation_view_form</field>
+            <field name="model">medical.liquidation</field>
+            <field name="arch" type="xml">
+                <form string="Medical Liquidation">
+                    <header>
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,approved,done"
+                            statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"
+                        />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="expense_button_box">
+
+                        </div>
+                        <div class="oe_title">
+                            <label for="number" class="oe_edit_only" />
+                            <h1>
+                                <field name="number" placeholder="New Liquidation" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="liquidation_type" />
+                                <field
+                                    name="partner_id"
+                                    attrs="{'invisible': [('liquidation_type', '!=', 'personal')], 'required': [('liquidation_type', '=', 'personal')]}"
+                                />
+                                <field
+                                    name="supplier_id"
+                                    attrs="{'invisible': [('liquidation_type', '!=', 'supplier')], 'required': [('liquidation_type', '=', 'supplier')]}"
+                                />
+                            </group>
+                            <group>
+                                <field
+                                    name="company_id"
+                                    groups="base.group_multi_company"
+                                />
+                                <field name="issue_date" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="medical_liquidation_view_search" model="ir.ui.view">
+            <field name="name">medical.liquidation.view.search</field>
+            <field name="model">medical.liquidation</field>
+            <field name="arch" type="xml">
+                <search string="Medical Liquidations">
+                    <field name="partner_id" />
+                    <field name="supplier_id" />
+                    <field name="number" />
+                </search>
+            </field>
+        </record>
+        <record id="medical_liquidation_tree_action" model="ir.actions.act_window">
+            <field name="name">Medical Liquidations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.liquidation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="menu_medical_liquidation_tree_action"
+            name="Medical Liquidations"
+            parent="menu_transmedical_operations"
+            action="medical_liquidation_tree_action"
+            sequence="20"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <menuitem
+            name="Transmedical"
+            id="menu_transmedical"
+            web_icon="transmedical_proceso_base,static/description/icon.png"
+            sequence="40"
+        />
+        <menuitem
+            name="Operations"
+            id="menu_transmedical_operations"
+            parent="menu_transmedical"
+            sequence="50"
+        />
+        <menuitem
+            name="Configuration"
+            id="menu_transmedical_configuration"
+            parent="menu_transmedical"
+            sequence="100"
+        />
+    </data>
+</odoo>
