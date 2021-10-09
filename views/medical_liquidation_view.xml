@@ -11,7 +11,9 @@
                     <field name="issue_date" />
                     <field name="partner_id" />
                     <field name="supplier_id" />
+                    <field name="beneficiary_type" />
                     <field name="liquidation_type" />
+                    <field name="total_liquidation" sum="Total Liquidation"/>
                     <field name="state" />
                 </tree>
             </field>
@@ -26,29 +28,33 @@
                             name="state"
                             widget="statusbar"
                             statusbar_visible="draft,approved,done"
-                            statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"
                         />
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="expense_button_box">
+                        <div class="oe_button_box" name="liquidation_button_box">
 
                         </div>
                         <div class="oe_title">
-                            <label for="number" class="oe_edit_only" />
+                            <label for="number" class="oe_edit_only" string="New Liquidation"/>
                             <h1>
                                 <field name="number" placeholder="New Liquidation" />
                             </h1>
                         </div>
                         <group>
                             <group>
-                                <field name="liquidation_type" />
+                                <field name="beneficiary_type" widget="radio"/>
+                                <field name="liquidation_type" widget="radio"/>
                                 <field
                                     name="partner_id"
-                                    attrs="{'invisible': [('liquidation_type', '!=', 'personal')], 'required': [('liquidation_type', '=', 'personal')]}"
+                                    attrs="{'invisible': [('beneficiary_type', '!=', 'personal')], 'required': [('beneficiary_type', '=', 'personal')]}"
+                                />
+                                <field
+                                    name="contract_id"
+                                    attrs="{'invisible': [('beneficiary_type', '!=', 'personal')], 'required': [('beneficiary_type', '=', 'personal')]}"
                                 />
                                 <field
                                     name="supplier_id"
-                                    attrs="{'invisible': [('liquidation_type', '!=', 'supplier')], 'required': [('liquidation_type', '=', 'supplier')]}"
+                                    attrs="{'invisible': [('beneficiary_type', '!=', 'supplier')], 'required': [('beneficiary_type', '=', 'supplier')]}"
                                 />
                             </group>
                             <group>
@@ -57,8 +63,19 @@
                                     groups="base.group_multi_company"
                                 />
                                 <field name="issue_date" />
+                                <field name="reception_date" />
+                                <field name="max_payment_date" />
+                                <field name="kind_of_care" widget="radio"/>
                             </group>
                         </group>
+                        <label for="concept" />
+                        <field name="concept" />
+                        <notebook colspan="4">
+                            <page string="Invoice Details">
+                                <field name="invoice_liquidation_ids"
+                                       context="{'default_beneficiary_type': beneficiary_type}" colspan="4"/>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
@@ -79,12 +96,14 @@
                 </search>
             </field>
         </record>
+
         <record id="medical_liquidation_tree_action" model="ir.actions.act_window">
             <field name="name">Medical Liquidations</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">medical.liquidation</field>
             <field name="view_mode">tree,form</field>
         </record>
+
         <menuitem
             id="menu_medical_liquidation_tree_action"
             name="Medical Liquidations"
@@ -92,5 +111,82 @@
             action="medical_liquidation_tree_action"
             sequence="20"
         />
+
+        <record id="medical_liquidation_invoice_view_tree" model="ir.ui.view">
+            <field name="name">medical_liquidation_invoice_view_tree</field>
+            <field name="model">medical.liquidation.invoice</field>
+            <field name="arch" type="xml">
+                <tree string="Invoices">
+                    <field name="supplier_id"/>
+                    <field name="document_number"/>
+                    <field name="document_date"/>
+                    <field name="sri_authorization"/>
+                    <field name="document_type" optional="hide"/>
+                    <field name="date_due"/>
+                    <field name="procedure_id" optional="show"/>
+                    <field name="diagnostic_id" optional="show"/>
+                    <field name="quantity" optional="hide"/>
+                    <field name="price_unit" optional="hide"/>
+                    <field name="subtotal" optional="hide" sum="Subtotal"/>
+                    <field name="not_covered" optional="hide"/>
+                    <field name="eligible" optional="hide" sum="Eligible"/>
+                    <field name="deductible" optional="hide" sum="Deductible"/>
+                    <field name="percentage" optional="hide"/>
+                    <field name="total" optional="hide" sum="Total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medical_liquidation_invoice_view_form" model="ir.ui.view">
+            <field name="name">medical_liquidation_invoice_view_form</field>
+            <field name="model">medical.liquidation.invoice</field>
+            <field name="arch" type="xml">
+                <form string="medical_liquidation_invoice_form">
+                    <sheet>
+                        <group string="Invoice Data">
+                            <group>
+                                <field name="beneficiary_type" invisible="1"/>
+                                <field name="supplier_id"/>
+                                <field name="document_number"/>
+                                <field name="document_date"/>
+                                <field name="sri_authorization"/>
+                            </group>
+                            <group>
+                                <field name="document_type" />
+                                <field name="date_due" />
+                                <field name="procedure_id" options="{'no_create': True}"/>
+                                <field name="diagnostic_id" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <group string="Values" >
+                            <group>
+                                <field name="quantity" />
+                                <field name="price_unit" />
+                                <field name="subtotal" />
+                                <field name="not_covered" />
+                            </group>
+                            <group>
+                                <field name="eligible" />
+                                <field name="deductible" />
+                                <field name="percentage" />
+                                <field name="total" />
+                            </group>
+                        </group>
+                        <label for="reason_not_covered" />
+                        <field name="reason_not_covered" />
+                        <notebook colspan="4" attrs="{'invisible': [('beneficiary_type', '!=', 'supplier')]}">
+                            <page string="No Covered Details">
+                                <field name="not_covered_ids">
+                                    <tree editable="bottom">
+                                        <field name="description" />
+                                        <field name="amount" sum="Amount"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>

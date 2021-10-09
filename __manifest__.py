@@ -24,6 +24,8 @@
         "views/medical_attention_order_view.xml",
         "views/partner_view.xml",
         "views/external_invoice_view.xml",
+        "views/medical_procedure_view.xml",
+        "views/medical_diagnostic_view.xml",
     ],
     "demo": [],
     "installable": True,

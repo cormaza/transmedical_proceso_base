@@ -1,4 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_account_external_invoice_group_user","access_account_external_invoice_group_user","model_account_external_invoice","base.group_user",1,1,1,0
-"access_medical_attention_order_group_user","access_medical_attention_order_group_user","model_medical_attention_order","base.group_user",1,1,1,0
-"access_medical_liquidation_group_user","access_medical_liquidation_group_user","model_medical_liquidation","base.group_user",1,1,1,0
+"access_account_external_invoice_group_user","access_account_external_invoice_group_user","model_account_external_invoice","base.group_user",1,1,1,1
+"access_medical_attention_order_group_user","access_medical_attention_order_group_user","model_medical_attention_order","base.group_user",1,1,1,1
+"access_medical_liquidation_group_user","access_medical_liquidation_group_user","model_medical_liquidation","base.group_user",1,1,1,1
+"access_medical_liquidation_invoice_group_user","access_medical_liquidation_invoice_group_user","model_medical_liquidation_invoice","base.group_user",1,1,1,1
+"access_medical_liquidation_invoice_not_covered_group_user","access_medical_liquidation_invoice_not_covered_group_user","model_medical_liquidation_invoice_not_covered","base.group_user",1,1,1,1
+"access_medical_procedure_group_user","access_medical_procedure_group_user","model_medical_procedure","base.group_user",1,1,1,1
+"access_medical_diagnostic_group_user","access_medical_diagnostic_group_user","model_medical_diagnostic","base.group_user",1,1,1,1

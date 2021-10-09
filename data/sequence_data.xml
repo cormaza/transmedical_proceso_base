@@ -2,5 +2,19 @@
 <odoo>
     <data noupdate="1">
 
+        <record id="seq_medical_liquidation" model="ir.sequence">
+            <field name="name">Medical Liquidation</field>
+            <field name="code">medical.liquidation</field>
+            <field eval="5" name="padding" />
+            <field name="prefix">LM-</field>
+        </record>
+
+        <record id="seq_medical_attention_order" model="ir.sequence">
+            <field name="name">Medical Attention Order</field>
+            <field name="code">medical.attention.order</field>
+            <field eval="5" name="padding" />
+            <field name="prefix">ODA-</field>
+        </record>
+
     </data>
 </odoo>

@@ -6,7 +6,7 @@
             <field name="model">medical.attention.order</field>
             <field name="arch" type="xml">
                 <tree string="medical_attention_order_tree">
-                    <field name="company_id" />
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="number" />
                     <field name="issue_date" />
                     <field name="partner_id" />
@@ -34,7 +34,7 @@
 
                         </div>
                         <div class="oe_title">
-                            <label for="number" class="oe_edit_only" />
+                            <label for="number" class="oe_edit_only" string="New Attention Order"/>
                             <h1>
                                 <field
                                     name="number"
@@ -45,6 +45,7 @@
                         <group>
                             <group>
                                 <field name="partner_id" />
+                                <field name="contract_id" />
                                 <field name="supplier_id" />
                             </group>
                             <group>

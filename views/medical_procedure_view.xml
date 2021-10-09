@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="medical_procedure_view_tree" model="ir.ui.view">
+            <field name="name">medical_procedure_view_tree</field>
+            <field name="model">medical.procedure</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Procedures">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medical_procedure_view_form" model="ir.ui.view">
+            <field name="name">medical_procedure_view_form</field>
+            <field name="model">medical.procedure</field>
+            <field name="arch" type="xml">
+                <form string="Medical Procedure">
+                    <sheet>
+                        <widget
+                            name="web_ribbon"
+                            title="Archived"
+                            bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"
+                        />
+                        <field name="active" invisible="1" />
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="medical_procedure_action" model="ir.actions.act_window">
+            <field name="name">Medical Procedures</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.procedure</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_medical_procedure_action"
+                  name="Medical Procedures"
+                  parent="menu_transmedical_configuration"
+                  action="medical_procedure_action"
+                  sequence="10"/>
+
+    </data>
+</odoo>
