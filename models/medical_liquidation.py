@@ -86,6 +86,12 @@ class MedicalLiquidation(models.Model):
         string='Total liquidation',
         required=False
     )
+    attention_order_ids = fields.One2many(
+        comodel_name='medical.attention.order',
+        inverse_name='liquidation_id',
+        string='Attention orders',
+        required=False
+    )
 
     @api.model
     def create(self, vals):

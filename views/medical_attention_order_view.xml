@@ -11,8 +11,13 @@
                     <field name="issue_date" />
                     <field name="partner_id" />
                     <field name="supplier_id" />
+                    <field name="attention_type" />
+                    <field name="ambulatory_attention_type" optional="hide"/>
+                    <field name="hospitable_attention_type" optional="hide"/>
                     <field name="state" />
                     <field name="liquidation_id" />
+                    <field name="subtotal" sum="Subtotal"/>
+                    <field name="copayment_total" sum="CoPayment Total"/>
                 </tree>
             </field>
         </record>
@@ -46,16 +51,54 @@
                             <group>
                                 <field name="partner_id" />
                                 <field name="contract_id" />
-                                <field name="supplier_id" />
+                                <field name="issue_date" />
                             </group>
                             <group>
                                 <field
                                     name="company_id"
                                     groups="base.group_multi_company"
                                 />
-                                <field name="issue_date" />
+                                <field name="attention_type" />
+                                <field name="ambulatory_attention_type" attrs="{'invisible': [('attention_type', '!=', 'ambulatory')]}"/>
+                                <field name="hospitable_attention_type" attrs="{'invisible': [('attention_type', '!=', 'hospitable')]}"/>
+                                <field name="supplier_id" />
                             </group>
                         </group>
+                        <label for="concept" />
+                        <field name="concept" />
+                        <notebook colspan="4">
+                            <page string="Details">
+                                <field name="detail_ids">
+                                    <tree editable="bottom">
+                                        <field name="description" />
+                                        <field name="quantity" />
+                                        <field name="price_unit" />
+                                        <field name="diagnostic_id" />
+                                        <field name="eligible" />
+                                        <field name="total" />
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="description" />
+                                            <field name="quantity" />
+                                            <field name="price_unit" />
+                                            <field name="diagnostic_id" />
+                                            <field name="eligible" />
+                                            <field name="total" />
+                                        </group>
+                                    </form>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="subtotal" />
+                                    <field name="copayment_percentage" />
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="copayment_total" />
+                                    </div>
+                                    <field name="copayment_total" nolabel="1" class="oe_subtotal_footer_separator" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />

@@ -42,8 +42,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="beneficiary_type" widget="radio"/>
-                                <field name="liquidation_type" widget="radio"/>
+                                <field name="beneficiary_type" />
+                                <field name="liquidation_type" />
                                 <field
                                     name="partner_id"
                                     attrs="{'invisible': [('beneficiary_type', '!=', 'personal')], 'required': [('beneficiary_type', '=', 'personal')]}"
@@ -65,7 +65,7 @@
                                 <field name="issue_date" />
                                 <field name="reception_date" />
                                 <field name="max_payment_date" />
-                                <field name="kind_of_care" widget="radio"/>
+                                <field name="kind_of_care" />
                             </group>
                         </group>
                         <label for="concept" />
