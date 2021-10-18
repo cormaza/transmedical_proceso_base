@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
         <record id="medical_diagnostic_view_tree" model="ir.ui.view">
             <field name="name">medical_diagnostic_view_tree</field>
             <field name="model">medical.diagnostic</field>
             <field name="arch" type="xml">
                 <tree string="Medical Diagnostics">
-                    <field name="code"/>
-                    <field name="name"/>
+                    <field name="code" />
+                    <field name="name" />
+                    <field name="sex" optional="hide" />
+                    <field name="min_age" optional="hide" />
+                    <field name="max_age" optional="hide" />
                 </tree>
             </field>
         </record>
-
         <record id="medical_diagnostic_view_form" model="ir.ui.view">
             <field name="name">medical_diagnostic_view_form</field>
             <field name="model">medical.diagnostic</field>
@@ -27,31 +28,37 @@
                         />
                         <field name="active" invisible="1" />
                         <group>
-                            <field name="code"/>
-                            <field name="name"/>
+                            <group>
+                                <field name="code" />
+                                <field name="name" />
+                            </group>
+                            <group>
+                                <field name="sex" />
+                                <field name="min_age" />
+                                <field name="max_age" />
+                            </group>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers"/>
-                        <field name="activity_ids" widget="mail_activity"/>
-                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
                     </div>
                 </form>
             </field>
         </record>
-
         <record id="medical_diagnostic_action" model="ir.actions.act_window">
             <field name="name">Medical Diagnostics</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">medical.diagnostic</field>
             <field name="view_mode">tree,form</field>
         </record>
-
-        <menuitem id="menu_medical_diagnostic_action"
-                  name="Medical Diagnostics"
-                  parent="menu_transmedical_configuration"
-                  action="medical_diagnostic_action"
-                  sequence="10"/>
-
+        <menuitem
+            id="menu_medical_diagnostic_action"
+            name="Medical Diagnostics"
+            parent="menu_transmedical_configuration"
+            action="medical_diagnostic_action"
+            sequence="10"
+        />
     </data>
 </odoo>
