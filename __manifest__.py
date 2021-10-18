@@ -26,6 +26,7 @@
         "views/external_invoice_view.xml",
         "views/medical_procedure_view.xml",
         "views/medical_diagnostic_view.xml",
+        "views/medical_speciality_view.xml",
     ],
     "demo": [],
     "installable": True,

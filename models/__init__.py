@@ -5,3 +5,4 @@ from . import medical_diagnostic
 from . import medical_procedure
 from . import medical_liquidation
 from . import partner
+from . import medical_speciality

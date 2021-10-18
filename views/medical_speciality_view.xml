@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="medical_speciality_view_tree" model="ir.ui.view">
+            <field name="name">medical_speciality_view_tree</field>
+            <field name="model">medical.speciality</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Specialities">
+                    <field name="code" />
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record id="medical_speciality_view_form" model="ir.ui.view">
+            <field name="name">medical_speciality_view_form</field>
+            <field name="model">medical.speciality</field>
+            <field name="arch" type="xml">
+                <form string="Medical Speciality">
+                    <sheet>
+                        <widget
+                            name="web_ribbon"
+                            title="Archived"
+                            bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"
+                        />
+                        <field name="active" invisible="1" />
+                        <group>
+                            <group>
+                                <field name="code" />
+                                <field name="name" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="medical_speciality_action" model="ir.actions.act_window">
+            <field name="name">Medical Specialities</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.speciality</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="menu_medical_speciality_action"
+            name="Medical Specialities"
+            parent="menu_transmedical_configuration"
+            action="medical_speciality_action"
+            sequence="20"
+        />
+    </data>
+</odoo>
