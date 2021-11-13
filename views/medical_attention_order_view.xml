@@ -6,18 +6,21 @@
             <field name="model">medical.attention.order</field>
             <field name="arch" type="xml">
                 <tree string="medical_attention_order_tree">
-                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="company_id" groups="base.group_multi_company" />
                     <field name="number" />
                     <field name="issue_date" />
-                    <field name="partner_id" />
+                    <field name="due_date" />
+                    <field name="contract_id" optional="hide" />
+                    <field name="partner_id" optional="hide" />
+                    <field name="beneficiary_id" />
                     <field name="supplier_id" />
                     <field name="attention_type" />
-                    <field name="ambulatory_attention_type" optional="hide"/>
-                    <field name="hospitable_attention_type" optional="hide"/>
+                    <field name="ambulatory_attention_type" optional="hide" />
+                    <field name="hospitable_attention_type" optional="hide" />
                     <field name="state" />
                     <field name="liquidation_id" />
-                    <field name="subtotal" sum="Subtotal"/>
-                    <field name="copayment_total" sum="CoPayment Total"/>
+                    <field name="subtotal" sum="Subtotal" />
+                    <field name="copayment_total" sum="CoPayment Total" />
                 </tree>
             </field>
         </record>
@@ -39,7 +42,11 @@
 
                         </div>
                         <div class="oe_title">
-                            <label for="number" class="oe_edit_only" string="New Attention Order"/>
+                            <label
+                                for="number"
+                                class="oe_edit_only"
+                                string="New Attention Order"
+                            />
                             <h1>
                                 <field
                                     name="number"
@@ -49,9 +56,24 @@
                         </div>
                         <group>
                             <group>
-                                <field name="partner_id" />
                                 <field name="contract_id" />
+                                <field
+                                    name="beneficiary_domain_ids"
+                                    invisible="1"
+                                    widget="many2many_tags"
+                                />
+                                <field
+                                    name="partner_id"
+                                    attrs="{'invisible': [('partner_id', '=', False)]}"
+                                />
+                                <field
+                                    name="beneficiary_id"
+                                    attrs="{'invisible': [('partner_id', '=', False)]}"
+                                    domain="[('id', 'in', beneficiary_domain_ids)]"
+                                />
                                 <field name="issue_date" />
+                                <field name="days_of_validity" invisible="1" />
+                                <field name="due_date" />
                             </group>
                             <group>
                                 <field
@@ -59,8 +81,14 @@
                                     groups="base.group_multi_company"
                                 />
                                 <field name="attention_type" />
-                                <field name="ambulatory_attention_type" attrs="{'invisible': [('attention_type', '!=', 'ambulatory')]}"/>
-                                <field name="hospitable_attention_type" attrs="{'invisible': [('attention_type', '!=', 'hospitable')]}"/>
+                                <field
+                                    name="ambulatory_attention_type"
+                                    attrs="{'invisible': [('attention_type', '!=', 'ambulatory')]}"
+                                />
+                                <field
+                                    name="hospitable_attention_type"
+                                    attrs="{'invisible': [('attention_type', '!=', 'hospitable')]}"
+                                />
                                 <field name="supplier_id" />
                             </group>
                         </group>
@@ -71,32 +99,45 @@
                                 <field name="detail_ids">
                                     <tree editable="bottom">
                                         <field name="description" />
+                                        <field name="diagnostic_id" />
                                         <field name="quantity" />
                                         <field name="price_unit" />
-                                        <field name="diagnostic_id" />
+                                        <field name="subtotal" optional="hide" />
+                                        <field name="copay" />
                                         <field name="eligible" />
                                         <field name="total" />
                                     </tree>
                                     <form>
                                         <group>
                                             <field name="description" />
+                                            <field name="diagnostic_id" />
                                             <field name="quantity" />
                                             <field name="price_unit" />
-                                            <field name="diagnostic_id" />
+                                            <field name="subtotal" />
+                                            <field name="copay" />
                                             <field name="eligible" />
                                             <field name="total" />
                                         </group>
                                     </form>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <group
+                                    class="oe_subtotal_footer oe_right"
+                                    colspan="2"
+                                    name="sale_total"
+                                >
                                     <field name="subtotal" />
-                                    <field name="copayment_percentage" />
-                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <div
+                                        class="oe_subtotal_footer_separator oe_inline o_td_label"
+                                    >
                                         <label for="copayment_total" />
                                     </div>
-                                    <field name="copayment_total" nolabel="1" class="oe_subtotal_footer_separator" />
+                                    <field
+                                        name="copayment_total"
+                                        nolabel="1"
+                                        class="oe_subtotal_footer_separator"
+                                    />
                                 </group>
-                                <div class="oe_clear"/>
+                                <div class="oe_clear" />
                             </page>
                         </notebook>
                     </sheet>

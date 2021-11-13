@@ -1,4 +1,6 @@
-from odoo import fields, models, api, _
+from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 
 
 class MedicalAttentionOrder(models.Model):
@@ -16,12 +18,14 @@ class MedicalAttentionOrder(models.Model):
     company_id = fields.Many2one(
         comodel_name="res.company", string="Company", default=lambda self: self.env.user.company_id
     )
-    issue_date = fields.Datetime(string="Issue date", required=False)
-    partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
+    currency_id = fields.Many2one(related="company_id.currency_id")
+    issue_date = fields.Datetime(string="Issue date", required=False, default=fields.Date.today())
+    partner_id = fields.Many2one(related="contract_id.partner_id", store=True)
+    beneficiary_id = fields.Many2one(comodel_name="res.partner", string="Beneficiary", required=True)
     contract_id = fields.Many2one(
-        comodel_name='contract.contract',
-        string='Contract',
-        required=False
+        comodel_name="contract.contract",
+        string="Contract",
+        required=True,
     )
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
@@ -47,91 +51,127 @@ class MedicalAttentionOrder(models.Model):
             ("hospitable", "Hospitable"),
         ],
         required=True,
-        default="ambulatory"
+        default="ambulatory",
     )
     ambulatory_attention_type = fields.Selection(
-        string='Ambulatory Attention type',
+        string="Ambulatory Attention type",
         selection=[
-            ('consult', 'Consult'),
-            ('images', 'Images'),
-            ('laboratory', 'Laboratory'),
-            ('procedure', 'Procedure'),
+            ("consult", "Consult"),
+            ("images", "Images"),
+            ("laboratory", "Laboratory"),
+            ("procedure", "Procedure"),
         ],
         required=True,
-        default="consult"
+        default="consult",
     )
     hospitable_attention_type = fields.Selection(
-        string='Hospitable Attention type',
+        string="Hospitable Attention type",
         selection=[
-            ('images', 'Images'),
-            ('laboratory', 'Laboratory'),
+            ("images", "Images"),
+            ("laboratory", "Laboratory"),
         ],
         required=True,
-        default="images"
+        default="images",
     )
-    concept = fields.Text(
-        string='Concept',
-        required=True
-    )
+    concept = fields.Text(string="Concept", required=True)
     detail_ids = fields.One2many(
-        comodel_name='medical.attention.order.detail',
-        inverse_name='order_id',
-        string='Details',
-        required=False
+        comodel_name="medical.attention.order.detail", inverse_name="order_id", string="Details", required=False
     )
-    subtotal = fields.Float(
-        string='Subtotal',
-        required=False
+    subtotal = fields.Monetary(
+        string="Subtotal",
+        compute="_compute_amounts",
+        store=True,
     )
-    copayment_percentage = fields.Float(
-        string='CoPayment Percentage',
-        required=False
+    copayment_total = fields.Monetary(
+        string="CoPayment Total",
+        compute="_compute_amounts",
+        store=True,
     )
-    copayment_total = fields.Float(
-        string='CoPayment Total',
-        required=False
+
+    @api.depends(
+        "detail_ids.price_unit",
+        "detail_ids.quantity",
+        "detail_ids.copay",
     )
+    def _compute_amounts(self):
+        for rec in self:
+            rec.subtotal = sum(d.quantity * d.price_unit for d in rec.detail_ids)
+            rec.copayment_total = sum((d.quantity * d.price_unit * (d.copay / 100.0)) for d in rec.detail_ids)
+
+    days_of_validity = fields.Integer(
+        string="Days of validity",
+        required=True,
+        default=30,
+    )
+    due_date = fields.Date(
+        string="Due date",
+        compute="_compute_due_date",
+        store=True,
+    )
+
+    @api.depends(
+        "issue_date",
+        "days_of_validity",
+    )
+    def _compute_due_date(self):
+        for rec in self:
+            rec.due_date = rec.issue_date and rec.issue_date + relativedelta(days=rec.days_of_validity)
 
     @api.model
     def create(self, vals):
-        vals.update({
-            'number': self.env['ir.sequence'].next_by_code('medical.attention.order')
-        })
+        vals.update({"number": self.env["ir.sequence"].next_by_code("medical.attention.order")})
         return super(MedicalAttentionOrder, self).create(vals)
+
+    @api.onchange("contract_id")
+    def _onchange_contract(self):
+        if self.contract_id:
+            same_beneficiary = self.contract_id.partner_id.id in self.contract_id.beneficiary_ids.ids
+            if self.contract_id.beneficiary_ids:
+                if (len(self.contract_id.beneficiary_ids) - (same_beneficiary and 1 or 0)) == 1:
+                    self.beneficiary_id = self.contract_id.beneficiary_ids.ids[0]
+            else:
+                self.beneficiary_id = self.partner_id.id
+
+    beneficiary_domain_ids = fields.Many2many(
+        comodel_name="res.partner",
+        string="Beneficiary_domain",
+        compute="_compute_beneficiary_domain",
+    )
+
+    @api.depends(
+        "contract_id",
+    )
+    def _compute_beneficiary_domain(self):
+        for rec in self:
+            partners = rec.contract_id and rec.contract_id.partner_id or self.env["res.partner"]
+            if rec.contract_id.beneficiary_ids:
+                partners |= rec.contract_id.beneficiary_ids
+            rec.beneficiary_domain_ids = partners.ids
 
 
 class MedicalAttentionOrderDetail(models.Model):
 
     _name = "medical.attention.order.detail"
-    _description = 'Medical attention order detail'
+    _description = "Medical attention order detail"
 
-    order_id = fields.Many2one(
-        comodel_name='medical.attention.order',
-        string='Order',
-        required=False
+    order_id = fields.Many2one(comodel_name="medical.attention.order", string="Order", required=False)
+    currency_id = fields.Many2one(related="order_id.company_id.currency_id")
+    description = fields.Char(string="Description", required=True)
+    quantity = fields.Float(string="Quantity", required=False)
+    price_unit = fields.Monetary(string="Price unit", required=False)
+    subtotal = fields.Monetary(string="Subtotal", compute="_compute_amounts", store=True)
+    diagnostic_id = fields.Many2one(comodel_name="medical.diagnostic", string="Diagnostic", required=False)
+    copay = fields.Float(string="Copay(%)", required=False)
+    eligible = fields.Monetary(string="Eligible", compute="_compute_amounts", store=True)
+    total = fields.Monetary(string="Total", compute="_compute_amounts", store=True)
+
+    @api.depends(
+        "price_unit",
+        "quantity",
+        "copay",
     )
-    description = fields.Char(
-        string='Description',
-        required=True
-    )
-    quantity = fields.Float(
-        string='Quantity',
-        required=False
-    )
-    price_unit = fields.Float(
-        string='Price unit',
-        required=False
-    )
-    diagnostic_id = fields.Many2one(
-        comodel_name='medical.diagnostic',
-        string='Diagnostic',
-        required=False
-    )
-    eligible = fields.Float(
-        string='Eligible',
-        required=False
-    )
-    total = fields.Float(
-        string='Total',
-        required=False
-    )
+    def _compute_amounts(self):
+        for rec in self:
+            rec.subtotal = rec.price_unit * rec.quantity
+            rec.eligible = rec.subtotal * (1 - (rec.copay / 100.0))
+            rec.total = rec.subtotal - rec.eligible

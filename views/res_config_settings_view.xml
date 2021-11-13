@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_account_transmedical_config_settings" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.sri</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40" />
+            <field name="inherit_id" ref="base.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div
+                        class="app_settings_block"
+                        data-string="Transmedical"
+                        data-key="transmedical_proceso_base"
+                    >
+                        <h2>Medical Attention Order</h2>
+                        <div class="col-12 col-lg-6 o_setting_box" id="sri_invoice">
+                            <div class="o_setting_left_pane">
+
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Default Validity Days</span>
+                                <div class="text-muted">
+                                    Limit days of validity to medical attention order
+                                </div>
+                                <div class="content-group">
+                                    <div class="row mt16">
+                                        <label
+                                            string="Days of Validity"
+                                            for="default_days_of_validity"
+                                            class="col-lg-3 o_light_label"
+                                        />
+                                        <field
+                                            name="default_days_of_validity"
+                                            class="text-center oe_inline"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_transmedical_config" model="ir.actions.act_window">
+            <field name="name">Transmedical Configurations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_transmedical_config_settings" />
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'transmedical_proceso_base'}</field>
+        </record>
+        <menuitem
+            id="menu_account_config"
+            name="Settings"
+            parent="menu_transmedical_configuration"
+            sequence="1"
+            action="action_transmedical_config"
+            groups="base.group_system"
+        />
+    </data>
+</odoo>

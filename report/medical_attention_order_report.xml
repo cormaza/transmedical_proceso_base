@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <template id="template_medical_attention_order">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h1 class="text-center">
+                                Attention Order:
+                                <span t-field="o.number" />
+                            </h1>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Issue Date:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.issue_date" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Contractor:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Titular:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Identification:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id.vat" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong># Certificate:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-esc="12345" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Beneficiary:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.beneficiary_id" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Identification:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.beneficiary_id.vat" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong># Certificate:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-esc="12345" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong># Contract:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.contract_id.code" />
+                                    </td>
+                                    <td>
+                                        <strong>Inclusion:</strong>
+                                    </td>
+                                    <td>
+                                        <span />
+                                    </td>
+                                    <td>
+                                        <strong>Age:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.beneficiary_id.age" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Lender:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="o.supplier_id" />
+                                    </td>
+                                    <td>
+                                        <strong>Attention Type:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="o.attention_type" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <table
+                                class="table table-condensed table-bordered table-striped"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Detail</th>
+                                        <th>Quantity</th>
+                                        <th>Copay</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.detail_ids" t-as="d">
+                                        <td>
+                                            <span t-field="d.description" />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.quantity" />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.copay" />
+                                            %
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.total" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="clearfix" name="total_summary">
+                                <div id="total" class="row" name="total">
+                                    <div
+                                        t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto"
+                                    >
+                                        <table class="table table-sm">
+                                            <tr
+                                                class="border-black o_subtotal"
+                                                style=""
+                                            >
+                                                <td name="td_amount_untaxed_label">
+                                                    <strong>
+                                                        Paid by the
+                                                    affiliate
+                                                    </strong>
+                                                </td>
+                                                <td
+                                                    name="td_amount_untaxed"
+                                                    class="text-right"
+                                                >
+                                                    <span t-field="o.copayment_total" />
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black o_total">
+                                                <td name="td_amount_total_label">
+                                                    <strong>
+                                                        Total to bill
+                                                    Transmedical
+                                                    </strong>
+                                                </td>
+                                                <td
+                                                    name="td_amount_total"
+                                                    class="text-right"
+                                                >
+                                                    <span t-field="o.subtotal" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>
+                            <p
+                                class="text-center"
+                                style="color:red"
+                                t-esc="'Este documento debe ser canjeado para su cobro a TRANSMEDICAL HEALTH SYSTEMS dentro de los siguientes %s días posteriores a su emisión.' % (o.days_of_validity)"
+                            />
+                        </h3>
+                        <h2>
+                            <p class="text-center">
+                                <strong>
+                                    Valid Until:
+                                    <span
+                                        t-field="o.due_date"
+                                        t-options='{"format": "MMMM dd, yyyy"}'
+                                    />
+                                </strong>
+                            </p>
+                        </h2>
+                        <div class="clearfix">
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <strong>Produced By:</strong>
+                                    <span t-field="o.create_uid" />
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Date of elaboration:</strong>
+                                    <span t-field="o.create_date" />
+                                </div>
+                            </div>
+                        </div>
+                        <h3>
+                            <p class="text-left">
+                                *** Este Documento tiene validez de 48 horas laborables
+                                a partir de su fecha de emisión
+                                <br />
+                                *** Único e Intransferible
+                                <br />
+                                *** Sólo puede ser usado por el Beneficiario
+                            </p>
+                        </h3>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+            id="action_template_medical_attention_order"
+            model="medical.attention.order"
+            report_type="qweb-pdf"
+            string="Medical Attention Order"
+            name="transmedical_proceso_base.template_medical_attention_order"
+            file="transmedical_proceso_base.template_medical_attention_order"
+        />
+    </data>
+</odoo>
