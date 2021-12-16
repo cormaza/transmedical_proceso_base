@@ -27,6 +27,7 @@ class MedicalAttentionOrder(models.Model):
         string="Contract",
         required=True,
     )
+    contract_date = fields.Date('Contract Date', related="contract_id.date_start")
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
@@ -73,6 +74,7 @@ class MedicalAttentionOrder(models.Model):
         required=True,
         default="images",
     )
+    scheduled_date = fields.Date(string="Scheduled Date")
     concept = fields.Text(string="Concept", required=True)
     detail_ids = fields.One2many(
         comodel_name="medical.attention.order.detail", inverse_name="order_id", string="Details", required=False

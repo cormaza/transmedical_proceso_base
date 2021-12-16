@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="medical_relationship_tree" model="ir.ui.view">
+            <field name="name">medical_relationship_tree</field>
+            <field name="model">medical.relationship</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Relationship" editable="bottom">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="short_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medical_relationship_action" model="ir.actions.act_window">
+            <field name="name">RelationShip</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.relationship</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create New Medical RelationShip
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Medical RelationShip" id="medical_relationship_menuitem"
+                  parent="menu_transmedical_configuration" action="medical_relationship_action"/>
+
+    </data>
+</odoo>

@@ -8,3 +8,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_medical_procedure_group_user","access_medical_procedure_group_user","model_medical_procedure","base.group_user",1,1,1,1
 "access_medical_diagnostic_group_user","access_medical_diagnostic_group_user","model_medical_diagnostic","base.group_user",1,1,1,1
 "access_medical_speciality_group_user","access_medical_speciality_group_user","model_medical_speciality","base.group_user",1,1,1,1
+"access_medical_relationship_group_user","access_medical_relationship_group_user","model_medical_relationship","base.group_user",1,1,1,1

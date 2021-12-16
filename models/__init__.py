@@ -8,3 +8,4 @@ from . import partner
 from . import medical_speciality
 from . import company
 from . import res_config_settings
+from . import medical_relationship
