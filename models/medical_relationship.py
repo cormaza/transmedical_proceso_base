@@ -8,3 +8,7 @@ class MedicalRelationShip(models.Model):
     code = fields.Char('Code')
     name = fields.Char('Description')
     short_name = fields.Char('Short Name')
+
+    _sql_constraints = [
+        ("code_uniq", "unique(code)", "Code must be unique!"),
+    ]
