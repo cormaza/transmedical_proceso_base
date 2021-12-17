@@ -32,6 +32,7 @@
         "views/medical_procedure_view.xml",
         "views/medical_diagnostic_view.xml",
         "views/contract_contract_view.xml",
+        "views/medical_beneficts_view.xml",
         "views/medical_speciality_view.xml",
         "views/medical_relationship_view.xml",
         "views/res_config_settings_view.xml",

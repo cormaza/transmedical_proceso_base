@@ -9,9 +9,6 @@
                 <xpath expr="//group[@name='purchase']" position="inside">
                     <field name="medical_service_provider" />
                 </xpath>
-                <xpath expr="//field[@name='category_id']" position="after">
-                    <field name="contract_id"/>
-                </xpath>
             </field>
         </record>
     </data>

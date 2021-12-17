@@ -147,7 +147,7 @@ class MedicalAttentionOrder(models.Model):
         for rec in self:
             partners = rec.contract_id and rec.contract_id.partner_id or self.env["res.partner"]
             if rec.contract_id.beneficiary_ids:
-                partners |= rec.contract_id.beneficiary_ids
+                partners |= rec.contract_id.mapped('beneficiary_ids.partner_id')
             rec.beneficiary_domain_ids = partners.ids
 
 

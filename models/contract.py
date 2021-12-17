@@ -5,8 +5,7 @@ class ContractContract(models.Model):
 
     _inherit = "contract.contract"
 
-    beneficiary_ids = fields.One2many("res.partner", "contract_id", string="Beneficiaries")
-    relationship_id = fields.Many2one("medical.relationship", string="Relationship")
+    beneficiary_ids = fields.One2many("medical.beneficts", "contract_id", string="Beneficiaries")
 
     def name_get(self):
         result = []
