@@ -5,16 +5,18 @@
         <record id="contract_contract_inherit_form" model="ir.ui.view">
             <field name="name">contract.contract.form</field>
             <field name="model">contract.contract</field>
-            <field name="inherit_id" ref="contract_ux.contract_contract_form_view"/>
+            <field name="inherit_id" ref="contract.contract_contract_form_view"/>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='beneficiary_ids']" position="replace">
-                    <field name="beneficiary_ids" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="partner_id"/>
-                            <field name="relationship_id"/>
-                        </tree>
-                    </field>
+                <xpath expr="//page[@name='recurring_invoice_line']" position="after">
+                    <page string="Beneficiaries">
+                        <field name="beneficiary_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="partner_id"/>
+                                <field name="relationship_id"/>
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
             </field>
         </record>
