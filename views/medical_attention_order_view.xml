@@ -67,6 +67,10 @@
                                     attrs="{'invisible': [('partner_id', '=', False)]}"
                                 />
                                 <field
+                                    name="contract_date"
+                                    attrs="{'invisible': [('contract_date', '=', False)]}"
+                                />
+                                <field
                                     name="beneficiary_id"
                                     attrs="{'invisible': [('partner_id', '=', False)]}"
                                     domain="[('id', 'in', beneficiary_domain_ids)]"
@@ -90,6 +94,7 @@
                                     attrs="{'invisible': [('attention_type', '!=', 'hospitable')]}"
                                 />
                                 <field name="supplier_id" />
+                                <field name="scheduled_date" />
                             </group>
                         </group>
                         <label for="concept" />

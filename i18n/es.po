@@ -6,16 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-20 13:46+0000\n"
-"PO-Revision-Date: 2021-11-20 09:20-0500\n"
+"POT-Creation-Date: 2021-12-16 18:18+0000\n"
+"PO-Revision-Date: 2021-12-16 18:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"Language: es\n"
-"X-Generator: Poedit 2.3\n"
 
 #. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.template_medical_attention_order
@@ -128,7 +126,7 @@ msgstr "<strong>Producido por:</strong>"
 #. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.template_medical_attention_order
 msgid "<strong>Titular:</strong>"
-msgstr "<strong>Titular:</strong>"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__access_warning
@@ -288,6 +286,7 @@ msgid "CoPayment Total"
 msgstr "Total Copago"
 
 #. module: transmedical_proceso_base
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__code
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__code
 msgid "Code"
 msgstr "Código"
@@ -338,6 +337,11 @@ msgid "Contract"
 msgstr "Contrato"
 
 #. module: transmedical_proceso_base
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__contract_date
+msgid "Contract Date"
+msgstr ""
+
+#. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.template_medical_attention_order
 msgid "Copay"
 msgstr "Copago"
@@ -353,6 +357,11 @@ msgid "Create Contract"
 msgstr "Crear Contrato"
 
 #. module: transmedical_proceso_base
+#: model_terms:ir.actions.act_window,help:transmedical_proceso_base.medical_relationship_action
+msgid "Create New Medical RelationShip"
+msgstr ""
+
+#. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_account_external_invoice__create_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__create_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order_detail__create_uid
@@ -361,6 +370,7 @@ msgstr "Crear Contrato"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__create_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__create_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__create_uid
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__create_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__create_uid
 msgid "Created by"
 msgstr "Creado por"
@@ -374,6 +384,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__create_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__create_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__create_date
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__create_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__create_date
 msgid "Created on"
 msgstr "Creado en"
@@ -414,8 +425,10 @@ msgid "Deductible"
 msgstr "Deducible"
 
 #. module: transmedical_proceso_base
+#: model:ir.model,name:transmedical_proceso_base.model_medical_relationship
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order_detail__description
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__description
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__name
 msgid "Description"
 msgstr "Descripción"
 
@@ -455,6 +468,7 @@ msgstr "Nombre de Diagnostico"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__display_name
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__display_name
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__display_name
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__display_name
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__display_name
 msgid "Display Name"
 msgstr "Nombre Mostrado"
@@ -586,9 +600,10 @@ msgstr "Tipo de atención hospitalaria"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__id
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__id
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__id
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__id
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_account_external_invoice__activity_exception_icon
@@ -624,7 +639,7 @@ msgstr "Icono que indica una actividad con excepción."
 #: model:ir.model.fields,help:transmedical_proceso_base.field_medical_speciality__message_needaction
 #: model:ir.model.fields,help:transmedical_proceso_base.field_medical_speciality__message_unread
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Si está marcada, los mensajes nuevos requieren su atención."
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,help:transmedical_proceso_base.field_account_external_invoice__message_has_error
@@ -710,6 +725,7 @@ msgstr "Laboratorio"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice____last_update
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered____last_update
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure____last_update
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship____last_update
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
@@ -723,6 +739,7 @@ msgstr "Última modificación en"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__write_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__write_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__write_uid
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__write_uid
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__write_uid
 msgid "Last Updated by"
 msgstr "Última modificación por"
@@ -736,6 +753,7 @@ msgstr "Última modificación por"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__write_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice_not_covered__write_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__write_date
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__write_date
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_speciality__write_date
 msgid "Last Updated on"
 msgstr "Última modificación en"
@@ -837,6 +855,16 @@ msgstr "Procedimiento médico"
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_procedure_view_tree
 msgid "Medical Procedures"
 msgstr "Procedimientos médico"
+
+#. module: transmedical_proceso_base
+#: model:ir.ui.menu,name:transmedical_proceso_base.medical_relationship_menuitem
+msgid "Medical RelationShip"
+msgstr "Parentesco"
+
+#. module: transmedical_proceso_base
+#: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_relationship_tree
+msgid "Medical Relationship"
+msgstr "Parentesco"
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_res_partner__medical_service_provider
@@ -967,7 +995,7 @@ msgstr "# de Contrato"
 #. module: transmedical_proceso_base
 #: model:ir.model.fields.selection,name:transmedical_proceso_base.selection__medical_liquidation__kind_of_care__normal
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__not_covered
@@ -1095,7 +1123,7 @@ msgstr "Porcentaje"
 #. module: transmedical_proceso_base
 #: model:ir.model.fields.selection,name:transmedical_proceso_base.selection__medical_liquidation__beneficiary_type__personal
 msgid "Personal"
-msgstr "Personal"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__access_url
@@ -1167,6 +1195,11 @@ msgid "Reception date"
 msgstr "Fecha de Recepción"
 
 #. module: transmedical_proceso_base
+#: model:ir.actions.act_window,name:transmedical_proceso_base.medical_relationship_action
+msgid "RelationShip"
+msgstr ""
+
+#. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_account_external_invoice__activity_user_id
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__activity_user_id
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_diagnostic__activity_user_id
@@ -1197,6 +1230,11 @@ msgid "Sales Note"
 msgstr "Nota de Ventas"
 
 #. module: transmedical_proceso_base
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__scheduled_date
+msgid "Scheduled Date"
+msgstr ""
+
+#. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__access_token
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation__access_token
 msgid "Security Token"
@@ -1212,6 +1250,11 @@ msgstr "Ajustes"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_procedure__sex
 msgid "Sex"
 msgstr "Sexo"
+
+#. module: transmedical_proceso_base
+#: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_relationship__short_name
+msgid "Short Name"
+msgstr "Nombre Corto"
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__state
@@ -1244,7 +1287,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_attention_order_view_tree
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_liquidation_invoice_view_tree
 msgid "Subtotal"
-msgstr "Subtotal"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__supplier_id
@@ -1259,7 +1302,7 @@ msgstr "Proveedor"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_liquidation_invoice__total
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_liquidation_invoice_view_tree
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_liquidation_view_tree
@@ -1274,7 +1317,7 @@ msgstr "Total liquidación"
 #. module: transmedical_proceso_base
 #: model:ir.ui.menu,name:transmedical_proceso_base.menu_transmedical
 msgid "Transmedical"
-msgstr "Transmedical"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.actions.act_window,name:transmedical_proceso_base.action_transmedical_config
@@ -1355,19 +1398,19 @@ msgstr "Debe enviar una factura para la llamada"
 #. module: transmedical_proceso_base
 #: model:ir.model,name:transmedical_proceso_base.model_account_external_invoice
 msgid "account.external.invoice"
-msgstr "account.external.invoice"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model:ir.model,name:transmedical_proceso_base.model_medical_liquidation
 msgid "medical.liquidation"
-msgstr "medical.liquidation"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_attention_order_view_tree
 msgid "medical_attention_order_tree"
-msgstr "medical_attention_order_tree"
+msgstr ""
 
 #. module: transmedical_proceso_base
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.medical_liquidation_invoice_view_form
 msgid "medical_liquidation_invoice_form"
-msgstr "medical_liquidation_invoice_form"
+msgstr ""

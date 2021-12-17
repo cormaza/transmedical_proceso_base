@@ -27,6 +27,7 @@ class MedicalAttentionOrder(models.Model):
         string="Contract",
         required=True,
     )
+    contract_date = fields.Date('Contract Date', related="contract_id.date_start")
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
@@ -73,6 +74,7 @@ class MedicalAttentionOrder(models.Model):
         required=True,
         default="images",
     )
+    scheduled_date = fields.Date(string="Scheduled Date")
     concept = fields.Text(string="Concept", required=True)
     detail_ids = fields.One2many(
         comodel_name="medical.attention.order.detail", inverse_name="order_id", string="Details", required=False
@@ -145,7 +147,7 @@ class MedicalAttentionOrder(models.Model):
         for rec in self:
             partners = rec.contract_id and rec.contract_id.partner_id or self.env["res.partner"]
             if rec.contract_id.beneficiary_ids:
-                partners |= rec.contract_id.beneficiary_ids
+                partners |= rec.contract_id.mapped('beneficiary_ids.partner_id')
             rec.beneficiary_domain_ids = partners.ids
 
 
