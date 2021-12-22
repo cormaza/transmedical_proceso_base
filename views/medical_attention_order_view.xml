@@ -6,21 +6,21 @@
             <field name="model">medical.attention.order</field>
             <field name="arch" type="xml">
                 <tree string="medical_attention_order_tree">
-                    <field name="company_id" groups="base.group_multi_company" />
-                    <field name="number" />
-                    <field name="issue_date" />
-                    <field name="due_date" />
-                    <field name="contract_id" optional="hide" />
-                    <field name="partner_id" optional="hide" />
-                    <field name="beneficiary_id" />
-                    <field name="supplier_id" />
-                    <field name="attention_type" />
-                    <field name="ambulatory_attention_type" optional="hide" />
-                    <field name="hospitable_attention_type" optional="hide" />
-                    <field name="state" />
-                    <field name="liquidation_id" />
-                    <field name="subtotal" sum="Subtotal" />
-                    <field name="copayment_total" sum="CoPayment Total" />
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="number"/>
+                    <field name="issue_date"/>
+                    <field name="due_date"/>
+                    <field name="contract_id" optional="hide"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="beneficiary_id"/>
+                    <field name="supplier_id"/>
+                    <field name="attention_type"/>
+                    <field name="ambulatory_attention_type" optional="hide"/>
+                    <field name="hospitable_attention_type" optional="hide"/>
+                    <field name="state"/>
+                    <field name="liquidation_id"/>
+                    <field name="subtotal" sum="Subtotal"/>
+                    <field name="copayment_total" sum="CoPayment Total"/>
                 </tree>
             </field>
         </record>
@@ -30,6 +30,7 @@
             <field name="arch" type="xml">
                 <form string="Medical Attention Order">
                     <header>
+                        <button name="action_quotation_send" string="Send by Email" type="object" class="btn-primary"/>
                         <field
                             name="state"
                             widget="statusbar"
@@ -56,7 +57,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="contract_id" />
+                                <field name="contract_id"/>
                                 <field
                                     name="beneficiary_domain_ids"
                                     invisible="1"
@@ -75,16 +76,16 @@
                                     attrs="{'invisible': [('partner_id', '=', False)]}"
                                     domain="[('id', 'in', beneficiary_domain_ids)]"
                                 />
-                                <field name="issue_date" />
-                                <field name="days_of_validity" invisible="1" />
-                                <field name="due_date" />
+                                <field name="issue_date"/>
+                                <field name="days_of_validity" invisible="1"/>
+                                <field name="due_date"/>
                             </group>
                             <group>
                                 <field
                                     name="company_id"
                                     groups="base.group_multi_company"
                                 />
-                                <field name="attention_type" />
+                                <field name="attention_type"/>
                                 <field
                                     name="ambulatory_attention_type"
                                     attrs="{'invisible': [('attention_type', '!=', 'ambulatory')]}"
@@ -93,35 +94,35 @@
                                     name="hospitable_attention_type"
                                     attrs="{'invisible': [('attention_type', '!=', 'hospitable')]}"
                                 />
-                                <field name="supplier_id" />
-                                <field name="scheduled_date" />
+                                <field name="supplier_id"/>
+                                <field name="scheduled_date"/>
                             </group>
                         </group>
-                        <label for="concept" />
-                        <field name="concept" />
+                        <label for="concept"/>
+                        <field name="concept"/>
                         <notebook colspan="4">
                             <page string="Details">
                                 <field name="detail_ids">
                                     <tree editable="bottom">
-                                        <field name="description" />
-                                        <field name="diagnostic_id" />
-                                        <field name="quantity" />
-                                        <field name="price_unit" />
-                                        <field name="subtotal" optional="hide" />
-                                        <field name="copay" />
-                                        <field name="eligible" />
-                                        <field name="total" />
+                                        <field name="description"/>
+                                        <field name="diagnostic_id"/>
+                                        <field name="quantity"/>
+                                        <field name="price_unit"/>
+                                        <field name="subtotal" optional="hide"/>
+                                        <field name="copay"/>
+                                        <field name="eligible"/>
+                                        <field name="total"/>
                                     </tree>
                                     <form>
                                         <group>
-                                            <field name="description" />
-                                            <field name="diagnostic_id" />
-                                            <field name="quantity" />
-                                            <field name="price_unit" />
-                                            <field name="subtotal" />
-                                            <field name="copay" />
-                                            <field name="eligible" />
-                                            <field name="total" />
+                                            <field name="description"/>
+                                            <field name="diagnostic_id"/>
+                                            <field name="quantity"/>
+                                            <field name="price_unit"/>
+                                            <field name="subtotal"/>
+                                            <field name="copay"/>
+                                            <field name="eligible"/>
+                                            <field name="total"/>
                                         </group>
                                     </form>
                                 </field>
@@ -130,11 +131,11 @@
                                     colspan="2"
                                     name="sale_total"
                                 >
-                                    <field name="subtotal" />
+                                    <field name="subtotal"/>
                                     <div
                                         class="oe_subtotal_footer_separator oe_inline o_td_label"
                                     >
-                                        <label for="copayment_total" />
+                                        <label for="copayment_total"/>
                                     </div>
                                     <field
                                         name="copayment_total"
@@ -142,14 +143,14 @@
                                         class="oe_subtotal_footer_separator"
                                     />
                                 </group>
-                                <div class="oe_clear" />
+                                <div class="oe_clear"/>
                             </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" />
-                        <field name="activity_ids" widget="mail_activity" />
-                        <field name="message_ids" widget="mail_thread" />
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </form>
             </field>
@@ -159,9 +160,9 @@
             <field name="model">medical.attention.order</field>
             <field name="arch" type="xml">
                 <search string="Medical Attention Order">
-                    <field name="partner_id" />
-                    <field name="supplier_id" />
-                    <field name="number" />
+                    <field name="partner_id"/>
+                    <field name="supplier_id"/>
+                    <field name="number"/>
                 </search>
             </field>
         </record>
