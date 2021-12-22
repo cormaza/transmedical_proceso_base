@@ -149,17 +149,11 @@ class MedicalAttentionOrder(models.Model):
                 partners |= rec.contract_id.mapped('beneficiary_ids.partner_id')
             rec.beneficiary_domain_ids = partners.ids
 
-    def _find_mail_template(self):
-        template_id = False
-        template_id = self.env['ir.model.data'].xmlid_to_res_id(
-            'transmedical_proceso_base.medical_atencion_order_mail_template', raise_if_not_found=False)
-
-        return template_id
-
     def action_quotation_send(self):
         ''' Opens a wizard to compose an email, with relevant mail template loaded by default '''
         self.ensure_one()
-        template_id = self._find_mail_template()
+        template_id = self.env['ir.model.data'].xmlid_to_res_id(
+            'transmedical_proceso_base.medical_atencion_order_mail_template', raise_if_not_found=False)
         lang = self.env.context.get('lang')
         template = self.env['mail.template'].browse(template_id)
         if template.lang:
