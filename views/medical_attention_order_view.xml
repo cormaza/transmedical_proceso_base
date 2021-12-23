@@ -30,7 +30,7 @@
             <field name="arch" type="xml">
                 <form string="Medical Attention Order">
                     <header>
-                        <button name="action_quotation_send" string="Send by Email" type="object" class="btn-primary"/>
+                        <button name="action_quotation_send" string="Send by Email" type="object" class="btn-primary" states="liquidated"/>
                         <field
                             name="state"
                             widget="statusbar"
