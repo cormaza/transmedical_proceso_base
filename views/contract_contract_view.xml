@@ -1,24 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
         <record id="contract_contract_inherit_form" model="ir.ui.view">
             <field name="name">contract.contract.form</field>
             <field name="model">contract.contract</field>
-            <field name="inherit_id" ref="contract.contract_contract_form_view"/>
-            <field name="priority" eval="8"/>
+            <field name="inherit_id" ref="contract.contract_contract_form_view" />
+            <field name="priority" eval="8" />
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='recurring_invoice_line']" position="after">
                     <page string="Beneficiaries">
                         <field name="beneficiary_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="partner_id"/>
-                                <field name="relationship_id"/>
+                                <field name="partner_id" />
+                                <field name="relationship_id" />
                             </tree>
                         </field>
                     </page>
                 </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="copay_percentage" />
+                </xpath>
             </field>
         </record>
+        <menuitem
+            id="menu_action_customer_contract_transmedical"
+            name="Contracts"
+            parent="menu_transmedical_customers"
+            action="contract.action_customer_contract"
+            sequence="100"
+        />
     </data>
 </odoo>

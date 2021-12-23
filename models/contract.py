@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class ContractContract(models.Model):
@@ -6,6 +6,11 @@ class ContractContract(models.Model):
     _inherit = "contract.contract"
 
     beneficiary_ids = fields.One2many("medical.beneficts", "contract_id", string="Beneficiaries")
+    copay_percentage = fields.Float(
+        string="Copay %",
+        required=True,
+        default=20,
+    )
 
     def name_get(self):
         result = []

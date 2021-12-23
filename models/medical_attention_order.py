@@ -26,7 +26,8 @@ class MedicalAttentionOrder(models.Model):
         string="Contract",
         required=True,
     )
-    contract_date = fields.Date('Contract Date', related="contract_id.date_start")
+    copay_percentage = fields.Float(related="contract_id.copay_percentage")
+    contract_date = fields.Date("Contract Date", related="contract_id.date_start")
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
@@ -146,37 +147,38 @@ class MedicalAttentionOrder(models.Model):
         for rec in self:
             partners = rec.contract_id and rec.contract_id.partner_id or self.env["res.partner"]
             if rec.contract_id.beneficiary_ids:
-                partners |= rec.contract_id.mapped('beneficiary_ids.partner_id')
+                partners |= rec.contract_id.mapped("beneficiary_ids.partner_id")
             rec.beneficiary_domain_ids = partners.ids
 
     def action_quotation_send(self):
-        ''' Opens a wizard to compose an email, with relevant mail template loaded by default '''
+        """ Opens a wizard to compose an email, with relevant mail template loaded by default """
         self.ensure_one()
-        template_id = self.env['ir.model.data'].xmlid_to_res_id(
-            'transmedical_proceso_base.medical_atencion_order_mail_template', raise_if_not_found=False)
-        lang = self.env.context.get('lang')
-        template = self.env['mail.template'].browse(template_id)
+        template_id = self.env["ir.model.data"].xmlid_to_res_id(
+            "transmedical_proceso_base.medical_atencion_order_mail_template", raise_if_not_found=False
+        )
+        lang = self.env.context.get("lang")
+        template = self.env["mail.template"].browse(template_id)
         if template.lang:
-            lang = template._render_template(template.lang, 'medical.attention.order', self.ids[0])
+            lang = template._render_template(template.lang, "medical.attention.order", self.ids[0])
         ctx = {
-            'default_model': 'medical.attention.order',
-            'default_res_id': self.ids[0],
-            'default_use_template': bool(template_id),
-            'default_template_id': template_id,
-            'default_composition_mode': 'comment',
-            'mark_so_as_sent': True,
-            'custom_layout': "mail.mail_notification_paynow",
-            'force_email': True,
-            'model_description': self.with_context(lang=lang).number,
+            "default_model": "medical.attention.order",
+            "default_res_id": self.ids[0],
+            "default_use_template": bool(template_id),
+            "default_template_id": template_id,
+            "default_composition_mode": "comment",
+            "mark_so_as_sent": True,
+            "custom_layout": "mail.mail_notification_paynow",
+            "force_email": True,
+            "model_description": self.with_context(lang=lang).number,
         }
         return {
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'views': [(False, 'form')],
-            'view_id': False,
-            'target': 'new',
-            'context': ctx,
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
         }
 
 
@@ -191,9 +193,21 @@ class MedicalAttentionOrderDetail(models.Model):
     price_unit = fields.Monetary(string="Price unit", required=False)
     subtotal = fields.Monetary(string="Subtotal", compute="_compute_amounts", store=True)
     diagnostic_id = fields.Many2one(comodel_name="medical.diagnostic", string="Diagnostic", required=False)
-    copay = fields.Float(string="Copay(%)", required=False)
+    copay = fields.Float(string="Copay(%)", compute="_compute_copay", store=True)
     eligible = fields.Monetary(string="Eligible", compute="_compute_amounts", store=True)
     total = fields.Monetary(string="Total", compute="_compute_amounts", store=True)
+
+    @api.depends(
+        "order_id.contract_id.copay_percentage",
+        "order_id.state",
+    )
+    def _compute_copay(self):
+        for rec in self:
+            rec.copay = (
+                rec.order_id.state not in ("approved", "liquidated")
+                and rec.order_id.contract_id.copay_percentage
+                or rec.copay
+            )
 
     @api.depends(
         "price_unit",

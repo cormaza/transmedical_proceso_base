@@ -11,5 +11,12 @@
                 </xpath>
             </field>
         </record>
+        <menuitem
+            id="menu_res_partner_action_customer"
+            name="Customers"
+            parent="menu_transmedical_customers"
+            action="account.res_partner_action_customer"
+            sequence="90"
+        />
     </data>
 </odoo>

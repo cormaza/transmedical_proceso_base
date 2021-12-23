@@ -8,6 +8,12 @@
             sequence="40"
         />
         <menuitem
+            name="Customers"
+            id="menu_transmedical_customers"
+            parent="menu_transmedical"
+            sequence="50"
+        />
+        <menuitem
             name="Operations"
             id="menu_transmedical_operations"
             parent="menu_transmedical"
