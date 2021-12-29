@@ -15,7 +15,7 @@ class CustomerPortal(CustomerPortal):
         return values
 
     @http.route(['/my/atencion_order', '/my/atencion_order/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_quotes(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
+    def portal_my_medical_atention_order(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
         AtencionOrder = request.env['medical.attention.order']
