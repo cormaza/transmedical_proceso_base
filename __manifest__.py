@@ -14,6 +14,7 @@
         "muk_rest",
         "contract",
         "partner_contact_birthdate",
+        "utm",
     ],
     "data": [
         "security/ir.model.access.csv",

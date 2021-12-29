@@ -9,6 +9,7 @@ class MedicalAttentionOrder(models.Model):
         "mail.thread",
         "mail.activity.mixin",
         "portal.mixin",
+        "utm.mixin"
     ]
     _description = "Medical Attention Order"
     _rec_name = "number"
