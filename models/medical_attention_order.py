@@ -180,6 +180,11 @@ class MedicalAttentionOrder(models.Model):
             'context': ctx,
         }
 
+    def _compute_access_url(self):
+        super(MedicalAttentionOrder, self)._compute_access_url()
+        for order_id in self:
+            order_id.access_url = "/my/atencion_order/%s" % (order_id.id)
+
 
 class MedicalAttentionOrderDetail(models.Model):
     _name = "medical.attention.order.detail"

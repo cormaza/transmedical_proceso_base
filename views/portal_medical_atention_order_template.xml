@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template
+            id="portal_my_home_medical_atention_order"
+            name="Portal My Home : Medical Atention Order entries"
+            inherit_id="portal.portal_my_home"
+            priority="30"
+        >
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-if="medical_atention_order_count" t-call="portal.portal_docs_entry">
+                    <t t-set="title">Guias de Remision</t>
+                    <t t-set="url" t-value="'/my/atencion_order'"/>
+                    <t t-set="count" t-value="medical_atention_order_count"/>
+                </t>
+            </xpath>
+        </template>
+        <template
+            id="portal_my_home_menu_atencion_order"
+            name="Portal layout : atencion_order menu entries"
+            inherit_id="portal.portal_breadcrumbs"
+            priority="30"
+        >
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li
+                    t-if="page_name == 'atencion_order'"
+                    t-attf-class="breadcrumb-item #{'active ' if not atencion_order else ''}"
+                >
+                    <a t-if="delivery_note" t-attf-href="/my/atencion_order?{{ keep_query() }}">Medical Atention Order</a>
+                    <t t-else="">Medical Atention Order</t>
+                </li>
+                <li t-if="atencion_order" class="breadcrumb-item active">
+                    <t t-esc="atencion_order.l10n_ec_get_document_number()"/>
+                </li>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

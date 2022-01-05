@@ -49,10 +49,31 @@ class CustomerPortal(CustomerPortal):
             'quotations': quotations.sudo(),
             'page_name': 'quote',
             'pager': pager,
-            'default_url': '/my/quotes',
+            'default_url': '/my/atencion_order',
             'searchbar_sortings': searchbar_sortings,
             'sortby': sortby,
         })
         return request.render("transmedical_proceso_base.medical_atention_order_portal_template", values)
 
+    @http.route(
+        ["/my/delivery_note/<int:delivery_note_id>"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def portal_my_medical_order_detail(
+        self,
+        medical_order_id,
+        access_token=None,
+        report_type=None,
+        download=False,
+        **kw,
+    ):
+        medical_order_obj = self.env['medical.attention.order'].browse(medical_order_id)
+        return self._show_report(
+            model=medical_order_obj,
+            report_type=report_type,
+            report_ref="action_template_medical_attention_order",
+            download=download,
+        )
 

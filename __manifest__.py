@@ -25,6 +25,7 @@
         "report/medical_liquidation_report.xml",
         "data/mail_template_medical_liquidation.xml",
         "data/mail_template_medical_attention_order.xml",
+        "data/medical_atention_order_data.xml",
         "views/root_menu.xml",
         "views/medical_liquidation_view.xml",
         "views/medical_attention_order_view.xml",
