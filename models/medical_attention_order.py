@@ -9,7 +9,8 @@ class MedicalAttentionOrder(models.Model):
         "mail.thread",
         "mail.activity.mixin",
         "portal.mixin",
-        "utm.mixin"
+        "utm.mixin",
+        "l10n_ec.common.document.electronic"
     ]
     _description = "Medical Attention Order"
     _rec_name = "number"
@@ -179,6 +180,10 @@ class MedicalAttentionOrder(models.Model):
             'target': 'new',
             'context': ctx,
         }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return f"ODA-{self.number}"
 
     def _compute_access_url(self):
         super(MedicalAttentionOrder, self)._compute_access_url()

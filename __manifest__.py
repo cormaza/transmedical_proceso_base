@@ -32,6 +32,7 @@
         "views/partner_view.xml",
         "views/external_invoice_view.xml",
         "views/medical_procedure_view.xml",
+        "views/portal_medical_atention_order_template.xml",
         "views/medical_diagnostic_view.xml",
         "views/contract_contract_view.xml",
         "views/medical_beneficts_view.xml",
