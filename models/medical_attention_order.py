@@ -9,8 +9,6 @@ class MedicalAttentionOrder(models.Model):
         "mail.thread",
         "mail.activity.mixin",
         "portal.mixin",
-        "utm.mixin",
-        "l10n_ec.common.document.electronic"
     ]
     _description = "Medical Attention Order"
     _rec_name = "number"
@@ -188,7 +186,7 @@ class MedicalAttentionOrder(models.Model):
     def _compute_access_url(self):
         super(MedicalAttentionOrder, self)._compute_access_url()
         for order_id in self:
-            order_id.access_url = "/my/atencion_order/%s" % (order_id.id)
+            order_id.access_url = "/my/atention_order/%s" % (order_id.id)
 
 
 class MedicalAttentionOrderDetail(models.Model):

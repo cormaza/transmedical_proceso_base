@@ -14,15 +14,15 @@ class CustomerPortal(CustomerPortal):
         values = super(CustomerPortal, self)._prepare_home_portal_values()
         domain = [
         ]
-        AtencionOrder = request.env['medical.attention.order']
-        values['medical_atention_order_count'] = AtencionOrder.search_count(domain)
+        AtentionOrder = request.env['medical.attention.order']
+        values['medical_atention_order_count'] = AtentionOrder.search_count(domain)
         return values
 
-    @http.route(['/my/atencion_order', '/my/atencion_order/page/<int:page>'], type='http', auth="user", website=True)
+    @http.route(['/my/atention_order', '/my/atention_order/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_medical_atention_order(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
-        AtencionOrder = request.env['medical.attention.order']
+        AtentionOrder = request.env['medical.attention.order']
 
         domain = []
 
@@ -34,7 +34,7 @@ class CustomerPortal(CustomerPortal):
             sortby = 'number'
         sort_order = searchbar_sortings[sortby]['order']
 
-        medical_atention_order_count = AtencionOrder.search_count(domain)
+        medical_atention_order_count = AtentionOrder.search_count(domain)
         filterby = "all"
         pager = portal_pager(
             url="/my/atention_order",
@@ -48,7 +48,7 @@ class CustomerPortal(CustomerPortal):
             page=page,
             step=self._items_per_page,
         )
-        atention_order = AtencionOrder.search(
+        atention_order = AtentionOrder.search(
             domain, order=sort_order, limit=self._items_per_page, offset=pager["offset"]
         )
         request.session['my_atention_order_history'] = atention_order.ids[:100]
@@ -58,7 +58,7 @@ class CustomerPortal(CustomerPortal):
             'pager': pager,
             'medical_atention_order_count': medical_atention_order_count,
             "atention_order": atention_order,
-            'default_url': '/my/atencion_order',
+            'default_url': '/my/atention_order',
             "searchbar_sortings": OrderedDict(sorted(searchbar_sortings.items())),
             "sortby": sortby,
             "filterby": filterby,
@@ -80,7 +80,7 @@ class CustomerPortal(CustomerPortal):
         )
 
     @http.route(
-        ["/my/atencion_order/<int:medical_order_id>"],
+        ["/my/atention_order/<int:medical_order_id>"],
         type="http",
         auth="public",
         website=True,
@@ -103,6 +103,4 @@ class CustomerPortal(CustomerPortal):
             )
         values = self._atention_order_get_page_view_values(atention_order_sudo, access_token, **kw)
         return request.render("transmedical_proceso_base.portal_atention_order_page", values)
-        # values = self._delivery_note_get_page_view_values(medical_order_obj, access_token, **kw)
-        # return request.render("l10n_ec_delivery_note.portal_delivery_note_page", values)
 
