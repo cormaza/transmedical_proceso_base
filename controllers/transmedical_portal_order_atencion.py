@@ -12,7 +12,10 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_home_portal_values(self):
         values = super(CustomerPortal, self)._prepare_home_portal_values()
+        partner = request.env.user.partner_id.id
         domain = [
+            '|', ('partner_id', '=', partner),
+            ('beneficiary_id', '=', partner)
         ]
         AtentionOrder = request.env['medical.attention.order']
         values['medical_atention_order_count'] = AtentionOrder.search_count(domain)
