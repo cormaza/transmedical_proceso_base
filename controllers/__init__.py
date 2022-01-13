@@ -1,1 +1,1 @@
-from . import transmedical_portal_order_atencion
+from . import transmedical_portal_order_atention
