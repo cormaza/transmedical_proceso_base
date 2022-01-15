@@ -181,6 +181,15 @@ class MedicalAttentionOrder(models.Model):
             "context": ctx,
         }
 
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return f"ODA-{self.number}"
+
+    def _compute_access_url(self):
+        super(MedicalAttentionOrder, self)._compute_access_url()
+        for order_id in self:
+            order_id.access_url = "/my/atention_order/%s" % (order_id.id)
+
 
 class MedicalAttentionOrderDetail(models.Model):
     _name = "medical.attention.order.detail"
