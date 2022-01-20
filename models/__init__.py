@@ -10,3 +10,4 @@ from . import company
 from . import res_config_settings
 from . import medical_relationship
 from . import medical_beneficts
+from . import account_move
