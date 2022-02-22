@@ -90,13 +90,6 @@ class MedicalAttentionOrder(models.Model):
         store=True,
     )
 
-    @api.onchange(
-        "supplier_id"
-    )
-    def _onchange_supplier_id(self):
-        for record in self:
-            record.detail_ids = [(5, 0)]
-
     @api.depends(
         "detail_ids.price_unit",
         "detail_ids.quantity",
@@ -205,10 +198,9 @@ class MedicalAttentionOrderDetail(models.Model):
     order_id = fields.Many2one(comodel_name="medical.attention.order", string="Order", required=False)
     currency_id = fields.Many2one(related="order_id.company_id.currency_id")
     description = fields.Char(string="Description", required=True)
-    quantity = fields.Float(string="Quantity", required=False, default=1)
+    quantity = fields.Float(string="Quantity", required=False)
     price_unit = fields.Monetary(string="Price unit", required=False)
     subtotal = fields.Monetary(string="Subtotal", compute="_compute_amounts", store=True)
-    procedure_id = fields.Many2one(comodel_name="medical.procedure", string="Procedure", required=False)
     diagnostic_id = fields.Many2one(comodel_name="medical.diagnostic", string="Diagnostic", required=False)
     copay = fields.Float(string="Copay(%)", compute="_compute_copay", store=True)
     eligible = fields.Monetary(string="Eligible", compute="_compute_amounts", store=True)
@@ -236,21 +228,3 @@ class MedicalAttentionOrderDetail(models.Model):
             rec.subtotal = rec.price_unit * rec.quantity
             rec.eligible = rec.subtotal * (1 - (rec.copay / 100.0))
             rec.total = rec.subtotal - rec.eligible
-
-    @api.onchange("procedure_id")
-    def _get_price_unit(self):
-        for record in self:
-            record.price_unit = record.procedure_id.rate
-
-    # @api.onchange(
-    #     "diagnostic_id"
-    # )
-    # def _onchange_diagnostic_id(self):
-    #     return {
-    #         'domain': {
-    #             'procedure_id': [
-    #                 ('procedure_type.supplier', '=', self.order_id.supplier_id.id),
-    #                 ('diagnostic_ids', '=', self.diagnostic_id.id)
-    #             ] if self.order_id.supplier_id and self.diagnostic_id else []
-    #         }
-    #     }
