@@ -8,6 +8,9 @@
                 <tree string="Medical Procedures">
                     <field name="code" />
                     <field name="name" />
+                    <field name="procedure_type"/>
+                    <field name="rate"/>
+                    <field name="supplier_procedure"/>
                     <field name="sex" optional="hide" />
                     <field name="min_age" optional="hide" />
                     <field name="max_age" optional="hide" />
@@ -31,13 +34,21 @@
                             <group>
                                 <field name="code" />
                                 <field name="name" />
+                                <field name="procedure_type"/>
+                                <field name="rate"/>
                             </group>
                             <group>
+                                <field name="supplier_procedure" readonly="1"/>
                                 <field name="sex" />
                                 <field name="min_age" />
                                 <field name="max_age" />
                             </group>
                         </group>
+                        <notebook>
+                            <page name="Diagnostic" string="Medical Diagnostic">
+                                <field name="diagnostic_ids"/>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
