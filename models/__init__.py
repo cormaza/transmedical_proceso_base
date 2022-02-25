@@ -6,6 +6,7 @@ from . import medical_procedure
 from . import medical_liquidation
 from . import partner
 from . import medical_speciality
+from . import medical_procedure_type
 from . import company
 from . import res_config_settings
 from . import medical_relationship

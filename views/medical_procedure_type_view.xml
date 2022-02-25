@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="medical_procedure_type_tree_view" model="ir.ui.view">
+            <field name="name">Medical.Procedure.Type.tree</field>
+            <field name="model">medical.procedure.type</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Procedure Type" editable="bottom">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="supplier"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="medical_procedure_type_action" model="ir.actions.act_window">
+            <field name="name">Medical Procedure Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.procedure.type</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="medical_procedure_type_tree_view" />
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create new recordset for Medical Procedure Type.
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Medical Procedure Type"
+            id="medical_procedure_type_item"
+            parent="menu_transmedical_configuration"
+            action="medical_procedure_type_action"
+            sequence="15"
+        />
+
+    </data>
+</odoo>
