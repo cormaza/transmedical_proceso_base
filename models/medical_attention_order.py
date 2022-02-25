@@ -241,3 +241,4 @@ class MedicalAttentionOrderDetail(models.Model):
     def _get_price_unit(self):
         for record in self:
             record.price_unit = record.procedure_id.rate
+

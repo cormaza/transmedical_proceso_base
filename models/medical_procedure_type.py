@@ -29,7 +29,7 @@ class MedicalProcedureType(models.Model):
         for record in self:
             if self.env['medical.procedure.type'].search([
                 ('code', '=', record.code),
-                ('supplier_id', '=', record.supplier.id),
+                ('supplier_id', '=', record.supplier_id.id),
                 ('id', '!=', record.id)
             ]):
                 raise UserError(_("Medical procedure type must have unique code"))
