@@ -241,16 +241,3 @@ class MedicalAttentionOrderDetail(models.Model):
     def _get_price_unit(self):
         for record in self:
             record.price_unit = record.procedure_id.rate
-
-    # @api.onchange(
-    #     "diagnostic_id"
-    # )
-    # def _onchange_diagnostic_id(self):
-    #     return {
-    #         'domain': {
-    #             'procedure_id': [
-    #                 ('procedure_type.supplier', '=', self.order_id.supplier_id.id),
-    #                 ('diagnostic_ids', '=', self.diagnostic_id.id)
-    #             ] if self.order_id.supplier_id and self.diagnostic_id else []
-    #         }
-    #     }

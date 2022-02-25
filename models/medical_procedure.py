@@ -27,17 +27,16 @@ class MedicalProcedure(models.Model):
     )
     rate = fields.Float(
         string="Rate",
-        tracking=True,
-        store=True
+        required=1
     )
-    procedure_type = fields.Many2one(
+    procedure_type_id = fields.Many2one(
         comodel_name='medical.procedure.type',
         string='Procedure type',
         required=False)
     supplier_procedure = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
-        related="procedure_type.supplier"
+        related="procedure_type_id.supplier"
     )
     min_age = fields.Integer(string="Min Age", required=False)
     max_age = fields.Integer(string="Max Age", required=False)
