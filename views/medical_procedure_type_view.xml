@@ -9,7 +9,7 @@
                 <tree string="Medical Procedure Type" editable="bottom">
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="supplier"/>
+                    <field name="supplier_id"/>
                 </tree>
             </field>
         </record>

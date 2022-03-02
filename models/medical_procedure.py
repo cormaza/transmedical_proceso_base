@@ -36,7 +36,7 @@ class MedicalProcedure(models.Model):
     supplier_procedure_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
-        related="procedure_type_id.supplier"
+        related="procedure_type_id.supplier_id"
     )
     min_age = fields.Integer(string="Min Age", required=False)
     max_age = fields.Integer(string="Max Age", required=False)
