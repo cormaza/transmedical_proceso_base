@@ -116,6 +116,10 @@
                                     <tree editable="bottom">
                                         <field name="description" />
                                         <field name="diagnostic_id" />
+                                        <field name="procedure_id" domain="[
+                                            ('supplier_procedure_id', '=', parent.supplier_id),
+                                            ('diagnostic_ids', '=', diagnostic_id)
+                                        ]"/>
                                         <field name="quantity" />
                                         <field name="price_unit" />
                                         <field name="subtotal" optional="hide" />

@@ -25,8 +25,24 @@ class MedicalProcedure(models.Model):
         default="any",
         required=False,
     )
+    rate = fields.Float(
+        string="Rate",
+        required=1
+    )
+    procedure_type_id = fields.Many2one(
+        comodel_name='medical.procedure.type',
+        string='Procedure type',
+        required=False)
+    supplier_procedure_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Supplier",
+        related="procedure_type_id.supplier_id"
+    )
     min_age = fields.Integer(string="Min Age", required=False)
     max_age = fields.Integer(string="Max Age", required=False)
+    diagnostic_ids = fields.Many2many(
+        comodel_name='medical.diagnostic',
+        string='Medical Procedure')
 
     _sql_constraints = [("code_uniq", "unique(code)", "Medical procedure must have unique code")]
 
