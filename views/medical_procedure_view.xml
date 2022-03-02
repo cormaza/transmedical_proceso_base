@@ -10,7 +10,7 @@
                     <field name="name" />
                     <field name="procedure_type_id"/>
                     <field name="rate"/>
-                    <field name="supplier_procedure"/>
+                    <field name="supplier_procedure_id"/>
                     <field name="sex" optional="hide" />
                     <field name="min_age" optional="hide" />
                     <field name="max_age" optional="hide" />
@@ -38,7 +38,7 @@
                                 <field name="rate"/>
                             </group>
                             <group>
-                                <field name="supplier_procedure" readonly="1"/>
+                                <field name="supplier_procedure_id" readonly="1"/>
                                 <field name="sex" />
                                 <field name="min_age" />
                                 <field name="max_age" />
