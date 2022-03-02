@@ -117,7 +117,7 @@
                                         <field name="description" />
                                         <field name="diagnostic_id" />
                                         <field name="procedure_id" domain="[
-                                            ('supplier_procedure', '=', parent.supplier_id),
+                                            ('supplier_procedure_id', '=', parent.supplier_id),
                                             ('diagnostic_ids', '=', diagnostic_id)
                                         ]"/>
                                         <field name="quantity" />

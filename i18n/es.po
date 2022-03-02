@@ -285,7 +285,7 @@ msgstr "Beneficiario"
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_contract_contract__beneficiary_ids
 #: model_terms:ir.ui.view,arch_db:transmedical_proceso_base.contract_contract_inherit_form
 msgid "Beneficiaries"
-msgstr "Beneficiarios"Be
+msgstr "Beneficiarios"
 
 #. module: transmedical_proceso_base
 #: model:ir.model.fields,field_description:transmedical_proceso_base.field_medical_attention_order__beneficiary_id
