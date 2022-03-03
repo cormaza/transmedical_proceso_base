@@ -32,7 +32,7 @@ class MedicalProcedure(models.Model):
     procedure_type_id = fields.Many2one(
         comodel_name='medical.procedure.type',
         string='Procedure type',
-        required=False)
+        required=True)
     supplier_procedure_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
