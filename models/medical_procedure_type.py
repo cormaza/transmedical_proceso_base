@@ -21,7 +21,7 @@ class MedicalProcedureType(models.Model):
         for record in self:
             record.display_name = "{0} - {1}".format(
                 record.name,
-                record.supplier.name,
+                record.supplier_id.name,
             )
 
     @api.constrains("code", "supplier_id")
