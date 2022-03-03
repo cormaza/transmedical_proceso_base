@@ -9,7 +9,10 @@ class MedicalProcedureType(models.Model):
 
     code = fields.Char("Code")
     name = fields.Char("Name")
-    display_name = fields.Char("Display Name", compute="_get_name_get")
+    display_name = fields.Char(
+        "Display Name",
+        compute="_get_name_get"
+    )
     supplier_id = fields.Many2one(
         comodel_name='res.partner',
         string='Supplier',
