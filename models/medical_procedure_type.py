@@ -13,6 +13,7 @@ class MedicalProcedureType(models.Model):
         "Display Name",
         compute="_get_name_get"
     )
+
     supplier_id = fields.Many2one(
         comodel_name='res.partner',
         string='Supplier',
