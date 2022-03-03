@@ -6,12 +6,13 @@ class MedicalProcedureType(models.Model):
     _name = 'medical.procedure.type'
     _description = 'Medical Type Procedure'
 
-    code = fields.Char("Code")
-    name = fields.Char("Name")
+    code = fields.Char("Code", required=True)
+    name = fields.Char("Name", required=True)
     supplier_id = fields.Many2one(
         comodel_name='res.partner',
         string='Supplier',
-        domain=[('medical_service_provider', '=', True)]
+        domain=[('medical_service_provider', '=', True)],
+        required=True
     )
 
     def name_get(self):
