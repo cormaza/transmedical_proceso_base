@@ -13,7 +13,7 @@
                     <field name="supplier_id" />
                     <field name="beneficiary_type" />
                     <field name="liquidation_type" />
-                    <field name="total_liquidation" sum="Total Liquidation"/>
+                    <field name="total_liquidation" sum="Total Liquidation" />
                     <field name="state" />
                 </tree>
             </field>
@@ -35,7 +35,11 @@
 
                         </div>
                         <div class="oe_title">
-                            <label for="number" class="oe_edit_only" string="New Liquidation"/>
+                            <label
+                                for="number"
+                                class="oe_edit_only"
+                                string="New Liquidation"
+                            />
                             <h1>
                                 <field name="number" placeholder="New Liquidation" />
                             </h1>
@@ -72,8 +76,28 @@
                         <field name="concept" />
                         <notebook colspan="4">
                             <page string="Invoice Details">
-                                <field name="invoice_liquidation_ids"
-                                       context="{'default_beneficiary_type': beneficiary_type}" colspan="4"/>
+                                <field
+                                    name="invoice_liquidation_ids"
+                                    context="{'default_beneficiary_type': beneficiary_type}"
+                                    colspan="4"
+                                />
+                                <group
+                                    class="oe_subtotal_footer oe_right"
+                                    colspan="2"
+                                    name="sale_total"
+                                >
+                                    <div
+                                        class="oe_subtotal_footer_separator oe_inline o_td_label"
+                                    >
+                                        <label for="total_liquidation" />
+                                    </div>
+                                    <field
+                                        name="total_liquidation"
+                                        nolabel="1"
+                                        class="oe_subtotal_footer_separator"
+                                    />
+                                </group>
+                                <div class="oe_clear" />
                             </page>
                         </notebook>
                     </sheet>
@@ -96,14 +120,12 @@
                 </search>
             </field>
         </record>
-
         <record id="medical_liquidation_tree_action" model="ir.actions.act_window">
             <field name="name">Medical Liquidations</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">medical.liquidation</field>
             <field name="view_mode">tree,form</field>
         </record>
-
         <menuitem
             id="menu_medical_liquidation_tree_action"
             name="Medical Liquidations"
@@ -111,32 +133,30 @@
             action="medical_liquidation_tree_action"
             sequence="20"
         />
-
         <record id="medical_liquidation_invoice_view_tree" model="ir.ui.view">
             <field name="name">medical_liquidation_invoice_view_tree</field>
             <field name="model">medical.liquidation.invoice</field>
             <field name="arch" type="xml">
                 <tree string="Invoices">
-                    <field name="supplier_id"/>
-                    <field name="document_number"/>
-                    <field name="document_date"/>
-                    <field name="sri_authorization"/>
-                    <field name="document_type" optional="hide"/>
-                    <field name="date_due"/>
-                    <field name="procedure_id" optional="show"/>
-                    <field name="diagnostic_id" optional="show"/>
-                    <field name="quantity" optional="hide"/>
-                    <field name="price_unit" optional="hide"/>
-                    <field name="subtotal" optional="hide" sum="Subtotal"/>
-                    <field name="not_covered" optional="hide"/>
-                    <field name="eligible" optional="hide" sum="Eligible"/>
-                    <field name="deductible" optional="hide" sum="Deductible"/>
-                    <field name="percentage" optional="hide"/>
-                    <field name="total" optional="hide" sum="Total"/>
+                    <field name="supplier_id" />
+                    <field name="document_number" />
+                    <field name="document_date" />
+                    <field name="sri_authorization" />
+                    <field name="document_type" optional="hide" />
+                    <field name="date_due" />
+                    <field name="procedure_id" optional="show" />
+                    <field name="diagnostic_id" optional="show" />
+                    <field name="quantity" optional="hide" />
+                    <field name="price_unit" optional="hide" />
+                    <field name="subtotal" optional="hide" sum="Subtotal" />
+                    <field name="not_covered" optional="hide" />
+                    <field name="eligible" optional="hide" sum="Eligible" />
+                    <field name="deductible" optional="hide" sum="Deductible" />
+                    <field name="percentage" optional="hide" />
+                    <field name="total" optional="hide" sum="Total" />
                 </tree>
             </field>
         </record>
-
         <record id="medical_liquidation_invoice_view_form" model="ir.ui.view">
             <field name="name">medical_liquidation_invoice_view_form</field>
             <field name="model">medical.liquidation.invoice</field>
@@ -145,20 +165,26 @@
                     <sheet>
                         <group string="Invoice Data">
                             <group>
-                                <field name="beneficiary_type" invisible="1"/>
-                                <field name="supplier_id"/>
-                                <field name="document_number"/>
-                                <field name="document_date"/>
-                                <field name="sri_authorization"/>
+                                <field name="beneficiary_type" invisible="1" />
+                                <field name="supplier_id" />
+                                <field name="document_number" />
+                                <field name="document_date" />
+                                <field name="sri_authorization" />
                             </group>
                             <group>
                                 <field name="document_type" />
                                 <field name="date_due" />
-                                <field name="procedure_id" options="{'no_create': True}"/>
-                                <field name="diagnostic_id" options="{'no_create': True}"/>
+                                <field
+                                    name="procedure_id"
+                                    options="{'no_create': True}"
+                                />
+                                <field
+                                    name="diagnostic_id"
+                                    options="{'no_create': True}"
+                                />
                             </group>
                         </group>
-                        <group string="Values" >
+                        <group string="Values">
                             <group>
                                 <field name="quantity" />
                                 <field name="price_unit" />
@@ -174,12 +200,15 @@
                         </group>
                         <label for="reason_not_covered" />
                         <field name="reason_not_covered" />
-                        <notebook colspan="4" attrs="{'invisible': [('beneficiary_type', '!=', 'supplier')]}">
+                        <notebook
+                            colspan="4"
+                            attrs="{'invisible': [('beneficiary_type', '!=', 'supplier')]}"
+                        >
                             <page string="No Covered Details">
                                 <field name="not_covered_ids">
                                     <tree editable="bottom">
                                         <field name="description" />
-                                        <field name="amount" sum="Amount"/>
+                                        <field name="amount" sum="Amount" />
                                     </tree>
                                 </field>
                             </page>
