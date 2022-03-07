@@ -24,6 +24,13 @@
             <field name="arch" type="xml">
                 <form string="Medical Liquidation">
                     <header>
+                        <button
+                            name="action_quotation_send"
+                            string="Send by Email"
+                            type="object"
+                            class="btn-primary"
+                            states="done"
+                        />
                         <field
                             name="state"
                             widget="statusbar"

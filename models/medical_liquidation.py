@@ -33,7 +33,7 @@ class MedicalLiquidation(models.Model):
         selection=[
             ("draft", "Draft"),
             ("approved", "Approved"),
-            ("done", "Approved"),
+            ("done", "Done"),
             ("cancelled", "Cancelled"),
         ],
         required=True,
@@ -84,10 +84,50 @@ class MedicalLiquidation(models.Model):
         for rec in self:
             rec.total_liquidation = sum(d.total for d in rec.invoice_liquidation_ids)
 
+    def action_quotation_send(self):
+        """ Opens a wizard to compose an email, with relevant mail template loaded by default """
+        self.ensure_one()
+        template_id = self.env["ir.model.data"].xmlid_to_res_id(
+            "transmedical_proceso_base.medical_liquidation_mail_template", raise_if_not_found=False
+        )
+        lang = self.env.context.get("lang")
+        template = self.env["mail.template"].browse(template_id)
+        if template.lang:
+            lang = template._render_template(template.lang, "medical.liquidation", self.ids[0])
+        ctx = {
+            "default_model": "medical.liquidation",
+            "default_res_id": self.ids[0],
+            "default_use_template": bool(template_id),
+            "default_template_id": template_id,
+            "default_composition_mode": "comment",
+            "mark_so_as_sent": True,
+            "custom_layout": "mail.mail_notification_paynow",
+            "force_email": True,
+            "model_description": self.with_context(lang=lang).number,
+        }
+        return {
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
+
     @api.model
     def create(self, vals):
         vals.update({"number": self.env["ir.sequence"].next_by_code("medical.liquidation")})
         return super(MedicalLiquidation, self).create(vals)
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return f"ODA-{self.number}"
+
+    def _compute_access_url(self):
+        super(MedicalLiquidation, self)._compute_access_url()
+        for liquidation_id in self:
+            liquidation_id.access_url = "/my/medical_liquidation/%s" % (liquidation_id.id)
 
 
 class MedicalLiquidationInvoice(models.Model):
