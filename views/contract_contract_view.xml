@@ -19,6 +19,7 @@
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="copay_percentage" />
+                    <field name="invoice_id" required="1" />
                 </xpath>
             </field>
         </record>
