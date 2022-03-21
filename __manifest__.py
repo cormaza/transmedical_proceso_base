@@ -39,6 +39,7 @@
         "views/medical_speciality_view.xml",
         "views/medical_relationship_view.xml",
         "views/res_config_settings_view.xml",
+        "views/account_move_view.xml",
     ],
     "demo": [],
     "installable": True,
