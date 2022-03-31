@@ -12,3 +12,4 @@ from . import res_config_settings
 from . import medical_relationship
 from . import medical_beneficts
 from . import account_move
+from . import report_invoice_xlsx
