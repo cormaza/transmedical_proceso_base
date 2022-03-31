@@ -41,6 +41,7 @@
         "views/medical_relationship_view.xml",
         "views/res_config_settings_view.xml",
         "views/account_move_view.xml",
+        "views/product_product_view.xml",
     ],
     "demo": [],
     "installable": True,
