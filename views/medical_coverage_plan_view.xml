@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="medical_coverage_plan_tree_view" model="ir.ui.view">
+            <field name="name">medical.coverage.plan.tree</field>
+            <field name="model">medical.coverage.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Coverage Plan" editable="bottom">
+                    <field name="code" />
+                    <field name="name" />
+                    <field name="relationship_id" widget="many2many_tags" />
+                    <field name="active" />
+                </tree>
+            </field>
+        </record>
+        <record id="medical_coverage_plan_action" model="ir.actions.act_window">
+            <field name="name">Medica Coverage Plan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.coverage.plan</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <menuitem
+            name="Medical Coverage Plan"
+            id="medical_coverage_plan_item"
+            parent="menu_transmedical_configuration"
+            action="medical_coverage_plan_action"
+            sequence="16"
+        />
+    </data>
+</odoo>

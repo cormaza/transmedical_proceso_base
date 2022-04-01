@@ -16,6 +16,25 @@ class ContractContract(models.Model):
         string="Reference Invoice",
         domain=[("state", "=", "posted"), ("type", "=", "out_invoice"), ("l10n_latam_internal_type", "=", "invoice")],
     )
+    state = fields.Selection(
+        selection=[("active", "Active"), ("inactive", "Inactive"), ("cancel", "Cancell")],
+        string="Status",
+        readonly=True,
+        copy=False,
+        default="active",
+    )
+    change_state = fields.Selection(
+        selection=[("active", "Active"), ("inactive", "Inactive"), ("cancel", "Cancell")],
+        string="Status",
+        required=True,
+        copy=False,
+        default="active",
+    )
+    tag_ids = fields.Many2many(comodel_name="contract.tag", string="Type Contract")
+
+    @api.onchange("change_state")
+    def _onchange_state(self):
+        self.state = self.change_state
 
     @api.constrains("invoice_id")
     def _unique_invoice_id(self):

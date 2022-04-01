@@ -42,6 +42,7 @@
         "views/res_config_settings_view.xml",
         "views/account_move_view.xml",
         "views/product_product_view.xml",
+        "views/medical_coverage_plan_view.xml",
     ],
     "demo": [],
     "installable": True,
