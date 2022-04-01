@@ -13,3 +13,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_model_medical_portal_public","access_model_medical_portal_public","model_medical_attention_order","base.group_portal",1,0,0,0
 "access_model_medical_procedure_type","access_model_medical_procedure_type","model_medical_procedure_type","base.group_user",1,1,1,1
 "access_model_medical_coverage_plan","access_model_medical_coverage_plan","model_medical_coverage_plan","base.group_user",1,1,1,1
+"access_model_medical_liquidation_portal_public","access_model_medical_liquidation_portal_public","model_medical_liquidation","base.group_portal",1,0,0,0
+"access_model_medical_procedure_type","access_model_medical_procedure_type","model_medical_procedure_type","base.group_user",1,1,1,1

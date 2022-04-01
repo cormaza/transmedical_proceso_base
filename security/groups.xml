@@ -3,10 +3,20 @@
     <data>
         <record id="medical_atention_order_rule_portal" model="ir.rule">
             <field name="name">Portal Personal Medical Atention Order</field>
-            <field name="model_id" ref="model_medical_attention_order"/>
-            <field name="domain_force">['|', ('partner_id', 'in', [user.partner_id.id]),
-                                        ('beneficiary_id', 'in', [user.partner_id.id])]</field>
-            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="model_id" ref="model_medical_attention_order" />
+            <field name="domain_force">
+                ['|', ('partner_id', 'in', [user.partner_id.id]),
+                                        ('beneficiary_id', 'in', [user.partner_id.id])]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        </record>
+        <record id="medical_liquidation_rule_portal" model="ir.rule">
+            <field name="name">Portal Personal Medical Liquidation</field>
+            <field name="model_id" ref="model_medical_liquidation" />
+            <field name="domain_force">
+                [('partner_id', 'in', [user.partner_id.id])]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]" />
         </record>
     </data>
 </odoo>
