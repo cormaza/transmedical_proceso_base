@@ -1,6 +1,153 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
+        <template id="template_medical_liquidation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h1 class="text-center">
+                                Medical Liquidation:
+                                <span t-field="o.number" />
+                            </h1>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Issue Date:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.issue_date" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Contractor:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Titular:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Identification:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id.vat" />
+                                    </td>
+                                    <td class="text-right">
+                                        <strong># Certificate:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-esc="12345" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Kind of Care:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.kind_of_care" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong># Contract:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.contract_id.code" />
+                                    </td>
+                                    <td>
+                                        <strong>Inclusion:</strong>
+                                    </td>
+                                    <td>
+                                        <span />
+                                    </td>
+                                </tr>
+                            </table>
+                            <table
+                                class="table table-condensed table-bordered table-striped"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Partner</th>
+                                        <th>N° Document</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.invoice_liquidation_ids" t-as="d">
+                                        <td>
+                                            <span t-field="d.supplier_id" />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.document_number" />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.quantity" />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="d.total" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h3>
+                            <p
+                                class="text-center"
+                                style="color:red"
+                                t-esc="'Este documento debe ser canjeado para su cobro a TRANSMEDICAL HEALTH SYSTEMS dentro de los siguientes %s días posteriores a su emisión.' % (o.max_payment_date)"
+                            />
+                        </h3>
+                        <h2>
+                            <p class="text-center">
+                                <strong>
+                                    Reception Date:
+                                    <span
+                                        t-field="o.reception_date"
+                                        t-options='{"format": "MMMM dd, yyyy"}'
+                                    />
+                                </strong>
+                            </p>
+                        </h2>
+                        <div class="clearfix">
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <strong>Produced By:</strong>
+                                    <span t-field="o.create_uid" />
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Date of elaboration:</strong>
+                                    <span t-field="o.create_date" />
+                                </div>
+                            </div>
+                        </div>
+                        <h3>
+                            <p class="text-left">
+                                *** Este Documento tiene validez de 48 horas laborables
+                                a partir de su fecha de emisión
+                                <br />
+                                *** Único e Intransferible
+                                <br />
+                                *** Sólo puede ser usado por el Beneficiario
+                            </p>
+                        </h3>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+            id="action_template_medical_liquidation"
+            model="medical.liquidation"
+            report_type="qweb-pdf"
+            string="Medical Liquidation"
+            name="transmedical_proceso_base.template_medical_liquidation"
+            file="transmedical_proceso_base.template_medical_liquidation"
+        />
     </data>
 </odoo>

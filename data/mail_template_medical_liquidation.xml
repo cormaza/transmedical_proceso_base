@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
-        <record id="medical_atencion_order_mail_template" model="mail.template">
-            <field name="name">Medical Atencion Order: Send by email</field>
-            <field name="model_id" ref="model_medical_attention_order"/>
-            <field name="subject">${object.company_id.name} Orden ${object.number}
+        <record id="medical_liquidation_mail_template" model="mail.template">
+            <field name="name">Medical Liquidation: Send by email</field>
+            <field name="model_id" ref="model_medical_liquidation" />
+            <field name="subject">
+                ${object.company_id.name} Liquidation ${object.number}
             </field>
             <field name="email_from">${(user.email_formatted) | safe}</field>
             <field name="partner_to">${object.partner_id.id}</field>
@@ -12,25 +13,37 @@
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         Hello,
-                        <br/>
-                        <br/>
-                        Dear ${object.partner_id.display_name} <br/><br/>
-                        Medical Attention Order <strong>${object.number}</strong> is ready for review. <br/><br/>
-                        Date of issue: <strong>${object.issue_date}</strong><br/>
-                        Expiration date: <strong>${object.due_date}</strong><br/>
-                        CoPay Total: <strong>${object.copayment_total}</strong><br/>
-
-                         <br/><br/>
+                        <br />
+                        <br />
+                        Dear ${object.partner_id.display_name}
+                        <br />
+                        <br />
+                        Medical Liquidation
+                        <strong>${object.number}</strong>
+                        is ready for review.
+                        <br />
+                        <br />
+                        Date of issue:
+                        <strong>${object.issue_date}</strong>
+                        <br />
+                        Reception date:
+                        <strong>${object.reception_date}</strong>
+                        <br />
+                        Total:
+                        <strong>${object.total}</strong>
+                        <br />
+                        <br />
+                        <br />
                         Do not hesitate to contact us if you have any questions.
-                        <br/>
+                        <br />
                     </p>
                 </div>
             </field>
-            <field name="report_template" ref="action_template_medical_attention_order"/>
+            <field name="report_template" ref="action_template_medical_liquidation" />
             <field name="report_name">${(object.name or '').replace('/','_')}</field>
             <field name="lang">${object.partner_id.lang}</field>
-            <field name="user_signature" eval="False"/>
-            <field name="auto_delete" eval="True"/>
+            <field name="user_signature" eval="False" />
+            <field name="auto_delete" eval="True" />
         </record>
     </data>
 </odoo>
