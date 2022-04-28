@@ -35,6 +35,7 @@ class MedicalDiagnostic(models.Model):
     )
     min_age = fields.Integer(string="Min Age", required=False)
     max_age = fields.Integer(string="Max Age", required=False)
+    procedure_id = fields.One2many("medical.procedure", "diagnostic_ids", string="Procedure ID")
 
     _sql_constraints = [("code_uniq", "unique(code)", "Medical diagnostic must have unique code")]
 

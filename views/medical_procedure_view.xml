@@ -8,9 +8,9 @@
                 <tree string="Medical Procedures">
                     <field name="code" />
                     <field name="name" />
-                    <field name="procedure_type_id"/>
-                    <field name="rate"/>
-                    <field name="supplier_procedure_id"/>
+                    <field name="procedure_type_id" />
+                    <field name="rate" />
+                    <field name="supplier_id" />
                     <field name="sex" optional="hide" />
                     <field name="min_age" optional="hide" />
                     <field name="max_age" optional="hide" />
@@ -34,11 +34,11 @@
                             <group>
                                 <field name="code" />
                                 <field name="name" />
-                                <field name="procedure_type_id"/>
-                                <field name="rate"/>
+                                <field name="procedure_type_id" />
+                                <field name="rate" />
                             </group>
                             <group>
-                                <field name="supplier_procedure_id" readonly="1"/>
+                                <field name="supplier_id" />
                                 <field name="sex" />
                                 <field name="min_age" />
                                 <field name="max_age" />
@@ -46,7 +46,7 @@
                         </group>
                         <notebook>
                             <page name="Diagnostic" string="Medical Diagnostic">
-                                <field name="diagnostic_ids"/>
+                                <field name="diagnostic_ids" />
                             </page>
                         </notebook>
                     </sheet>

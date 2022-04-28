@@ -1,19 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
         <record id="medical_procedure_type_tree_view" model="ir.ui.view">
             <field name="name">Medical.Procedure.Type.tree</field>
             <field name="model">medical.procedure.type</field>
             <field name="arch" type="xml">
                 <tree string="Medical Procedure Type" editable="bottom">
-                    <field name="code"/>
-                    <field name="name"/>
-                    <field name="supplier_id"/>
+                    <field name="code" />
+                    <field name="name" />
                 </tree>
             </field>
         </record>
-
         <record id="medical_procedure_type_action" model="ir.actions.act_window">
             <field name="name">Medical Procedure Type</field>
             <field name="type">ir.actions.act_window</field>
@@ -26,7 +23,6 @@
                 </p>
             </field>
         </record>
-
         <menuitem
             name="Medical Procedure Type"
             id="medical_procedure_type_item"
@@ -34,6 +30,5 @@
             action="medical_procedure_type_action"
             sequence="15"
         />
-
     </data>
 </odoo>

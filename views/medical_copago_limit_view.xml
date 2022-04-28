@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="medical_copago_limit_view_tree" model="ir.ui.view">
+            <field name="name">medical.copago.limit.tree</field>
+            <field name="model">medical.copago.limit</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Copay Limit" editable="bottom">
+                    <field name="procedure_id" />
+                    <field name="type_limit" />
+                    <field name="percentage" />
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

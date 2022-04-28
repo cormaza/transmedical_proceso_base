@@ -26,23 +26,23 @@ class MedicalAttentionOrder(models.Model):
         string="Contract",
         required=True,
     )
-    copay_percentage = fields.Float(related="contract_id.copay_percentage")
+    copay_percentage = fields.Float(compute="_compute_get_copay_percentage")
     contract_date = fields.Date("Contract Date", related="contract_id.date_start")
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
         string="Supplier",
-        required=False,
+        required=True,
         domain=[("medical_service_provider", "=", True)],
     )
     state = fields.Selection(
         string="State",
         selection=[
             ("draft", "Draft"),
-            ("approved", "Approved"),
             ("liquidated", "Liquidated"),
             ("cancel", "Cancel"),
         ],
         required=False,
+        default="draft",
     )
     liquidation_id = fields.Many2one(comodel_name="medical.liquidation", string="Liquidation", required=False)
     attention_type = fields.Selection(
@@ -75,7 +75,7 @@ class MedicalAttentionOrder(models.Model):
         default="images",
     )
     scheduled_date = fields.Date(string="Scheduled Date")
-    concept = fields.Text(string="Concept", required=True)
+    concept = fields.Text(string="Concept")
     detail_ids = fields.One2many(
         comodel_name="medical.attention.order.detail", inverse_name="order_id", string="Details", required=False
     )
@@ -90,9 +90,22 @@ class MedicalAttentionOrder(models.Model):
         store=True,
     )
 
-    @api.onchange(
-        "supplier_id"
-    )
+    def liquidate_oda(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Medical Liquidation Invoice Document",
+            "res_model": "medical.liquidation.invoice.document",
+            "view_mode": "form",
+            "context": {"default_medical_order_id": self.id},
+            "target": "new",
+        }
+
+    @api.depends("contract_id", "attention_type")
+    def _compute_get_copay_percentage(self):
+        for record in self:
+            record.copay_percentage = 0  # Consultar
+
+    @api.onchange("supplier_id")
     def _onchange_supplier_id(self):
         for record in self:
             record.detail_ids = [(5, 0)]
@@ -197,6 +210,11 @@ class MedicalAttentionOrder(models.Model):
         for order_id in self:
             order_id.access_url = "/my/atention_order/%s" % (order_id.id)
 
+    @api.onchange("ambulatory_attention_type")
+    def _onchange_ambulatory_type(self):
+        if self.ambulatory_attention_type == "consult":
+            return {"invisible": {"ambulatory_attention_type": True}}
+
 
 class MedicalAttentionOrderDetail(models.Model):
     _name = "medical.attention.order.detail"
@@ -214,17 +232,39 @@ class MedicalAttentionOrderDetail(models.Model):
     eligible = fields.Monetary(string="Eligible", compute="_compute_amounts", store=True)
     total = fields.Monetary(string="Total", compute="_compute_amounts", store=True)
 
+    @api.onchange("order_id")
+    def _onchange_ambulatory_type(self):
+        if self.order_id.ambulatory_attention_type != "consult":
+            return {
+                "domain": {
+                    "procedure_id": [
+                        ("supplier_id", "=", self.order_id.supplier_id),
+                        ("diagnostic_ids", "=", self.diagnostic_id),
+                    ]
+                }
+            }
+        else:
+            return {
+                "domain": {
+                    "procedure_id": [
+                        ("supplier_id", "=", self.order_id.supplier_id),
+                    ]
+                }
+            }
+
     @api.depends(
-        "order_id.contract_id.copay_percentage",
+        "order_id.contract_id.copage_limit_ids.percentage",
         "order_id.state",
     )
     def _compute_copay(self):
         for rec in self:
-            rec.copay = (
-                rec.order_id.state not in ("approved", "liquidated")
-                and rec.order_id.contract_id.copay_percentage
-                or rec.copay
+            procedure_type = rec.procedure_id.procedure_type_id.code
+            copay = sum(
+                rec.order_id.contract_id.copage_limit_ids.filtered(
+                    lambda x: x.procedure_id.code == procedure_type
+                ).mapped("percentage")
             )
+            rec.copay = rec.order_id.state != "liquidated" and copay or rec.copay
 
     @api.depends(
         "price_unit",
@@ -241,3 +281,66 @@ class MedicalAttentionOrderDetail(models.Model):
     def _get_price_unit(self):
         for record in self:
             record.price_unit = record.procedure_id.rate
+
+
+class MedicalLiquidationInvoiceDocument(models.TransientModel):
+    _name = "medical.liquidation.invoice.document"
+
+    sri_authorization = fields.Char(string="SRI Authorization", required=1)
+    document_number = fields.Char(string="Document number", required=1)
+    document_date = fields.Date(string="Document date", required=1)
+    document_type = fields.Selection(
+        string="Document type",
+        selection=[
+            ("sales_note", "Sales Note"),
+            ("invoice", "Invoice"),
+        ],
+        required=1,
+        default="invoice",
+    )
+    date_due = fields.Date(string="Date due", required=1)
+    medical_order_id = fields.Many2one("medical.attention.order", string="Medical Order")
+
+    def create_liquidation_id(self):
+        liquidation_ids = []
+        for record in self.medical_order_id:
+            LiquidationModel = self.env["medical.liquidation"]
+            LiquidationModelInvoice = self.env["medical.liquidation.invoice"]
+
+            liquidation_detail_fields = []
+            for line_id in record.detail_ids:
+                liquidation_line_id = LiquidationModelInvoice.create(
+                    {
+                        "supplier_id": record.supplier_id.id,
+                        "diagnostic_id": line_id.diagnostic_id.id,
+                        "procedure_id": line_id.procedure_id.id,
+                        "quantity": line_id.quantity,
+                        "price_unit": line_id.procedure_id.rate,
+                        "percentage": line_id.copay,
+                        "not_covered": (line_id.quantity * line_id.procedure_id.rate) * line_id.copay / 100,
+                        "sri_authorization": self.sri_authorization,
+                        "date_due": self.date_due,
+                        "document_date": self.document_date,
+                        "document_type": self.document_type,
+                        "document_number": self.document_number,
+                    }
+                )
+                liquidation_detail_fields.append(liquidation_line_id.id)
+            liquidation_fields = {
+                "beneficiary_type": "personal",
+                "liquidation_type": record.attention_type,
+                "partner_id": record.partner_id.id,
+                "contract_id": record.contract_id.id,
+                "company_id": self.env.company.id,
+                "invoice_liquidation_ids": [(6, 0, liquidation_detail_fields)],
+                "kind_of_care": "normal",
+            }
+            liquidation_ids = LiquidationModel.create(liquidation_fields)
+            record.state = "liquidated"
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Medical Liquidation",
+            "res_model": "medical.liquidation",
+            "view_mode": "tree,form",
+            "domain": [("id", "in", liquidation_ids.ids)],
+        }

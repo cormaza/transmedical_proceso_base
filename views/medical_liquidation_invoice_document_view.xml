@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record
+            id="wizard_medical_liquidation_invoice_document_view_form"
+            model="ir.ui.view"
+        >
+            <field name="name">Medical Liquidation Invoice Document</field>
+            <field name="model">medical.liquidation.invoice.document</field>
+            <field name="arch" type="xml">
+                <form string="Medical Liquidation Invoice Document">
+                    <sheet>
+                        <group>
+                            <field name="document_type" />
+                            <field name="document_number" />
+                            <field name="document_date" />
+                            <field name="date_due" />
+                            <field name="sri_authorization" />
+                            <field name="medical_order_id" invisible="1" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <div class="oe_left">
+                            <button
+                                string="Save"
+                                name="create_liquidation_id"
+                                type="object"
+                                icon="fa-cogs"
+                                class="oe_highlight"
+                            />
+                            or
+                            <button
+                                string="Close"
+                                special="cancel"
+                                type="object"
+                                icon="fa-close"
+                                class="oe_link"
+                            />
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="wizard_medical_liquidation_action" model="ir.actions.act_window">
+            <field name="name">Medical Liquidation Invoice Document</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.liquidation.invoice.document</field>
+            <field name="view_mode">form</field>
+        </record>
+    </data>
+</odoo>

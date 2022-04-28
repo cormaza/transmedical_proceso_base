@@ -1,8 +1,8 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class MedicalLiquidation(models.Model):
-
     _name = "medical.liquidation"
     _description = "medical.liquidation"
     _inherit = [
@@ -42,7 +42,7 @@ class MedicalLiquidation(models.Model):
     beneficiary_type = fields.Selection(
         string="Beneficiary type",
         selection=[
-            ("personal", "Personal"),
+            ("personal", "Customer"),
             ("supplier", "Supplier"),
         ],
         required=True,
@@ -131,7 +131,6 @@ class MedicalLiquidation(models.Model):
 
 
 class MedicalLiquidationInvoice(models.Model):
-
     _name = "medical.liquidation.invoice"
     _description = "Medical liquidation invoice"
 
@@ -156,15 +155,20 @@ class MedicalLiquidationInvoice(models.Model):
     )
     sri_authorization = fields.Char(string="SRI Authorization", required=False)
     procedure_id = fields.Many2one(comodel_name="medical.procedure", string="Procedure", required=False)
-    diagnostic_id = fields.Many2one(comodel_name="medical.diagnostic", string="Diagnostic", required=False)
-    quantity = fields.Float(string="Quantity", required=False)
+    diagnostic_id = fields.Many2one(
+        comodel_name="medical.diagnostic",
+        string="Diagnostic",
+        required=False,
+        domain=[("procedure_id", "=", "procedure_id")],
+    )
+    quantity = fields.Float(string="Quantity", required=False, digits="Product Price")
     price_unit = fields.Float(string="Price unit", required=False)
-    subtotal = fields.Float(string="Subtotal", required=False)
+    subtotal = fields.Float(string="Subtotal", compute="_compute_amount")
     not_covered = fields.Float(string="Not Covered", required=False)
-    eligible = fields.Float(string="Eligible", required=False)
+    eligible = fields.Float(string="Eligible", compute="_compute_amount")
     deductible = fields.Float(string="Deductible", required=False)
     percentage = fields.Float(string="Percentage", required=False)
-    total = fields.Float(string="Total", required=False)
+    total = fields.Float(string="Total", compute="_compute_amount")
     reason_not_covered = fields.Char(string="Reason not covered", required=False)
     not_covered_ids = fields.One2many(
         comodel_name="medical.liquidation.invoice.not.covered",
@@ -174,9 +178,32 @@ class MedicalLiquidationInvoice(models.Model):
     )
     beneficiary_type = fields.Selection(related="liquidation_id.beneficiary_type")
 
+    @api.depends("price_unit", "quantity", "not_covered", "deductible", "percentage")
+    def _compute_amount(self):
+        for record in self:
+            record.subtotal = record.price_unit * record.quantity
+            record.eligible = record.price_unit - record.not_covered
+            record.total = (record.eligible - record.deductible) - (
+                ((record.eligible - record.deductible) * record.percentage) / 100
+            )
+
+    @api.constrains("date_due")
+    def _constrains_invoive(self):
+        for record in self:
+            if record.date_due < record.document_date:
+                raise UserError(_("The expiration date must be greater than the document date"))
+
+    @api.constrains("document_number")
+    def _constraint_unique_document_number(self):
+        for record in self:
+            liquidation_id = self.env["medical.liquidation.invoice"].search(
+                [("document_number", "=", record.document_number), ("id", "!=", record.id)]
+            )
+            if liquidation_id:
+                raise UserError(_("existing invoice in a previously created settlement"))
+
 
 class MedicalLiquidationInvoiceNotCovered(models.Model):
-
     _name = "medical.liquidation.invoice.not.covered"
     _description = "Medical liquidation invoice not covered"
 

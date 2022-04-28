@@ -21,10 +21,24 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="copay_percentage" />
+                    <field name="limit_query" />
+                    <field name="deductible_ambulatory_porcentage" />
+                    <field name="deductible_hospitalary_porcentage" />
+                    <field name="maternity" />
                     <field name="change_state" />
                     <field name="invoice_id" required="1" />
                 </xpath>
+                <notebook position="inside">
+                    <page string="Copago">
+                        <field name="copage_limit_ids">
+                            <tree editable="bottom">
+                                <field name="procedure_id" />
+                                <field name="percentage" />
+                                <field name="type_limit" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </field>
         </record>
         <menuitem

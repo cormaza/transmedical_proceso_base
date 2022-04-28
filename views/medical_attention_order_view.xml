@@ -37,12 +37,14 @@
                             class="btn-primary"
                             states="liquidated"
                         />
-                        <field
-                            name="state"
-                            widget="statusbar"
-                            statusbar_visible="draft,approved,liquidated"
-                            statusbar_colors="{'KEY_IS_STATE':'VALUE_IS_COLOR'}"
+                        <button
+                            name="liquidate_oda"
+                            type="object"
+                            string="Posted"
+                            class="btn-primary"
+                            states="draft"
                         />
+                        <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="expense_button_box">
@@ -106,7 +108,10 @@
                             </group>
                         </group>
                         <label for="concept" />
-                        <field name="concept" />
+                        <field
+                            name="concept"
+                            attrs="{'required': [('ambulatory_attention_type', '!=', 'consult')]}"
+                        />
                         <notebook colspan="4">
                             <page string="Details">
                                 <field
@@ -116,10 +121,7 @@
                                     <tree editable="bottom">
                                         <field name="description" />
                                         <field name="diagnostic_id" />
-                                        <field name="procedure_id" domain="[
-                                            ('supplier_procedure_id', '=', parent.supplier_id),
-                                            ('diagnostic_ids', '=', diagnostic_id)
-                                        ]"/>
+                                        <field name="procedure_id" />
                                         <field name="quantity" />
                                         <field name="price_unit" />
                                         <field name="subtotal" optional="hide" />

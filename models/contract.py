@@ -6,8 +6,8 @@ class ContractContract(models.Model):
     _inherit = "contract.contract"
 
     beneficiary_ids = fields.One2many("medical.beneficts", "contract_id", string="Beneficiaries")
-    copay_percentage = fields.Float(
-        string="Copay %",
+    limit_query = fields.Float(
+        string="Limit Query",
         required=True,
         default=20,
     )
@@ -31,6 +31,22 @@ class ContractContract(models.Model):
         default="active",
     )
     tag_ids = fields.Many2many(comodel_name="contract.tag", string="Type Contract")
+    deductible_ambulatory_porcentage = fields.Float(
+        string="Deductible Ambulatory %",
+        required=True,
+        default=20,
+    )
+    deductible_hospitalary_porcentage = fields.Float(
+        string="Deductible hospitalary %",
+        required=True,
+        default=20,
+    )
+    maternity = fields.Float(
+        string="Maternity",
+        required=True,
+        default=20,
+    )
+    copage_limit_ids = fields.Many2many("medical.copago.limit", string="Copago_ids")
 
     @api.onchange("change_state")
     def _onchange_state(self):
@@ -50,3 +66,15 @@ class ContractContract(models.Model):
             name = "{} - {}".format(rec.code, rec.name)
             result.append((rec.id, name))
         return result
+
+
+class CopagoLimit(models.Model):
+    _name = "medical.copago.limit"
+    _description = "Model Percentage for procedure"
+    _rec_name = "procedure_id"
+
+    procedure_id = fields.Many2one("medical.procedure.type", string="Procedure Type", required=True)
+    percentage = fields.Float("Percentage %", digits="Product Price", required=True)
+    type_limit = fields.Selection(
+        [("inability", "Inability"), ("anual", "Anual")], string="Type Limit", required=True, default="inability"
+    )

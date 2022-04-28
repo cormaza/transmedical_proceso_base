@@ -45,6 +45,8 @@
         "views/account_move_view.xml",
         "views/product_product_view.xml",
         "views/medical_coverage_plan_view.xml",
+        "views/medical_copago_limit_view.xml",
+        "views/medical_liquidation_invoice_document_view.xml",
     ],
     "demo": [],
     "installable": True,

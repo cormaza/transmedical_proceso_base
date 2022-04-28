@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.osv import expression
 
 
@@ -25,26 +26,24 @@ class MedicalProcedure(models.Model):
         default="any",
         required=False,
     )
-    rate = fields.Float(
-        string="Rate",
-        required=1
-    )
-    procedure_type_id = fields.Many2one(
-        comodel_name='medical.procedure.type',
-        string='Procedure type',
-        required=True)
-    supplier_procedure_id = fields.Many2one(
-        comodel_name="res.partner",
-        string="Supplier",
-        related="procedure_type_id.supplier_id"
+    rate = fields.Float(string="Rate", required=1)
+    procedure_type_id = fields.Many2one(comodel_name="medical.procedure.type", string="Procedure type", required=True)
+    supplier_id = fields.Many2one(
+        comodel_name="res.partner", string="Supplier", domain=[("medical_service_provider", "=", True)], required=True
     )
     min_age = fields.Integer(string="Min Age", required=False)
     max_age = fields.Integer(string="Max Age", required=False)
-    diagnostic_ids = fields.Many2many(
-        comodel_name='medical.diagnostic',
-        string='Medical Procedure')
+    diagnostic_ids = fields.Many2many(comodel_name="medical.diagnostic", string="Medical Procedure")
 
     _sql_constraints = [("code_uniq", "unique(code)", "Medical procedure must have unique code")]
+
+    @api.constrains("supplier_id")
+    def _constraint_code(self):
+        for record in self:
+            if self.env["medical.procedure"].search(
+                [("code", "=", record.code), ("supplier_id", "=", record.supplier_id.id), ("id", "!=", record.id)]
+            ):
+                raise UserError(_("Medical procedure type must have unique code"))
 
     @api.model
     def name_search(self, name, args=None, operator="ilike", limit=100):
