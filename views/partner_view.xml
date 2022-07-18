@@ -8,6 +8,44 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='purchase']" position="inside">
                     <field name="medical_service_provider" />
+                    <field name="relationship_id" />
+                </xpath>
+                <xpath
+                    expr="//notebook/page[@name='sales_purchases']/group[@name='container_row_2']"
+                    position="inside"
+                >
+                    <group string="Información Paciente">
+                        <field name="birth_date" />
+                        <field name="age" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <!-- Inherit Form View to Modify it -->
+        <record id="res_partner_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//field[@name='child_ids']//form//field[@name='mobile']"
+                    position="after"
+                >
+                    <!-- Add your fields or attributes here -->
+                    <field
+                        name="relationship_id"
+                        placeholder="Parenteso..."
+                        attrs="{'readonly': [('type', '!=', 'contact'),('parent_id', '!=', False)],
+                                    'required': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                        options='{"no_open": True}'
+                    />
+                    <field
+                        name="comment"
+                        string="Siniestralidad.."
+                        placeholder="Siniestralidad..."
+                        attrs="{'readonly': [('type', '!=', 'contact'),('parent_id', '!=', False)],
+                                    'required': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                    />
                 </xpath>
             </field>
         </record>

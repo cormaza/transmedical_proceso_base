@@ -17,8 +17,8 @@
         "l10n_ec_reports",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "security/groups.xml",
+        "security/ir.model.access.csv",
         "data/cron_jobs.xml",
         "data/sequence_data.xml",
         "report/medical_attention_order_report.xml",

@@ -5,24 +5,28 @@
             name="Transmedical"
             id="menu_transmedical"
             web_icon="transmedical_proceso_base,static/description/icon.png"
+            groups="transmedical_proceso_base.transmedical_module"
             sequence="40"
         />
         <menuitem
             name="Customers"
             id="menu_transmedical_customers"
             parent="menu_transmedical"
+            groups="transmedical_proceso_base.transmedical_module"
             sequence="50"
         />
         <menuitem
             name="Operations"
             id="menu_transmedical_operations"
             parent="menu_transmedical"
+            groups="transmedical_proceso_base.transmedical_module"
             sequence="50"
         />
         <menuitem
             name="Configuration"
             id="menu_transmedical_configuration"
             parent="menu_transmedical"
+            groups="transmedical_proceso_base.transmedical_module"
             sequence="100"
         />
     </data>

@@ -10,5 +10,14 @@
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
         </record>
+        <record id="contrat_contract_expiration" model="ir.cron">
+            <field name="name">Expiration Contract</field>
+            <field name="model_id" ref="model_contract_contract" />
+            <field name="state">code</field>
+            <field name="code">model.notificacion_expiracion()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+        </record>
     </data>
 </odoo>

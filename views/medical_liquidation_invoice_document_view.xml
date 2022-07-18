@@ -12,6 +12,10 @@
                     <sheet>
                         <group>
                             <field name="document_type" />
+                            <field
+                                name="invoice_id"
+                                attrs="{'invisible': [('document_type', '!=', 'invoice')]}"
+                            />
                             <field name="document_number" />
                             <field name="document_date" />
                             <field name="date_due" />

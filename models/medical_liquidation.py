@@ -39,10 +39,12 @@ class MedicalLiquidation(models.Model):
         required=True,
         default="draft",
     )
+    # ODA SIEMPRE DEBE TENER TIPO DE BENEFICIARIO PROVEEDOR AFILIADO/SUPPLIER SON LOS MISMO
+
     beneficiary_type = fields.Selection(
-        string="Beneficiary type",
+        string="Customer Type",
         selection=[
-            ("personal", "Customer"),
+            ("personal", "Afiliado"),
             ("supplier", "Supplier"),
         ],
         required=True,

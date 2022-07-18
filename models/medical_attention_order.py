@@ -286,9 +286,6 @@ class MedicalAttentionOrderDetail(models.Model):
 class MedicalLiquidationInvoiceDocument(models.TransientModel):
     _name = "medical.liquidation.invoice.document"
 
-    sri_authorization = fields.Char(string="SRI Authorization", required=1)
-    document_number = fields.Char(string="Document number", required=1)
-    document_date = fields.Date(string="Document date", required=1)
     document_type = fields.Selection(
         string="Document type",
         selection=[
@@ -298,15 +295,31 @@ class MedicalLiquidationInvoiceDocument(models.TransientModel):
         required=1,
         default="invoice",
     )
-    date_due = fields.Date(string="Date due", required=1)
-    medical_order_id = fields.Many2one("medical.attention.order", string="Medical Order")
+    invoice_id = fields.Many2one(
+        "account.move",
+        string="Inovice",
+        domain=[("type", "=", "out_invoice"), ("l10n_latam_internal_type", "=", "invoice")],
+        required=1,
+    )
+    sri_authorization = fields.Char(string="SRI Authorization")
+    document_number = fields.Char(string="Document number")
+    document_date = fields.Date(string="Document date")
+    date_due = fields.Date(string="Date due")
+    medical_order_id = fields.Many2one("medical.attention.order")
+
+    @api.onchange("document_type")
+    def _onchange_document_type(self):
+        if self.document_type == "invoice":
+            self.sri_authorization = self.invoice_id.l10n_ec_xml_key
+            self.document_number = self.invoice_id.l10n_ec_document_number
+            self.document_date = self.invoice_id.invoice_date
+            self.date_due = self.invoice_id.invoice_date_due
 
     def create_liquidation_id(self):
         liquidation_ids = []
         for record in self.medical_order_id:
             LiquidationModel = self.env["medical.liquidation"]
             LiquidationModelInvoice = self.env["medical.liquidation.invoice"]
-
             liquidation_detail_fields = []
             for line_id in record.detail_ids:
                 liquidation_line_id = LiquidationModelInvoice.create(
@@ -316,7 +329,7 @@ class MedicalLiquidationInvoiceDocument(models.TransientModel):
                         "procedure_id": line_id.procedure_id.id,
                         "quantity": line_id.quantity,
                         "price_unit": line_id.procedure_id.rate,
-                        "percentage": line_id.copay,
+                        "percentage": 0.00,
                         "not_covered": (line_id.quantity * line_id.procedure_id.rate) * line_id.copay / 100,
                         "sri_authorization": self.sri_authorization,
                         "date_due": self.date_due,
