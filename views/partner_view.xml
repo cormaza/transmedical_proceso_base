@@ -15,9 +15,48 @@
                     position="inside"
                 >
                     <group string="Información Paciente">
-                        <field name="birth_date" />
+                        <field name="birthdate_date" force_save="1" />
                         <field name="age" />
                     </group>
+                </xpath>
+                <xpath
+                    expr="//notebook/page[@name='accounting']//group[@name='banks']/field[@name='bank_ids']/tree"
+                    position="inside"
+                >
+                    <field name="type_res_bank" />
+                    <field
+                        name="l10n_ec_account_type"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'account')]}"
+                    />
+                    <field
+                        name="l10n_ec_bank_code"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'account')]}"
+                    />
+                    <field
+                        name="bank_credit_card"
+                        domain="[('bank_id', '=', bank_id)]"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'card')]}"
+                    />
+                    <field
+                        name="number_credit_card"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'card')]}"
+                    />
+                    <field
+                        name="code_credit_card"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'card')]}"
+                    />
+                    <field
+                        name="type_credit_card"
+                        attrs="{'invisible': [('type_res_bank', '!=', 'card')]}"
+                    />
+                </xpath>
+                <xpath
+                    expr="//notebook/page[@name='accounting']//group[@name='banks']/field[@name='bank_ids']/tree/field[@name='acc_number']"
+                    position="attributes"
+                >
+                    <attribute name="attrs">
+                        {'invisible': [('type_res_bank', '!=', 'account')]}
+                    </attribute>
                 </xpath>
             </field>
         </record>
@@ -40,11 +79,9 @@
                         options='{"no_open": True}'
                     />
                     <field
-                        name="comment"
+                        name="medical_diagnostic_id"
                         string="Siniestralidad.."
-                        placeholder="Siniestralidad..."
-                        attrs="{'readonly': [('type', '!=', 'contact'),('parent_id', '!=', False)],
-                                    'required': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                        attrs="{'readonly': [('type', '!=', 'contact'),('parent_id', '!=', False)]}"
                     />
                 </xpath>
             </field>

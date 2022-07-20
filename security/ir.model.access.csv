@@ -16,3 +16,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_model_medical_liquidation_portal_public","access_model_medical_liquidation_portal_public","model_medical_liquidation","base.group_portal",1,0,0,0
 "access_model_medical_procedure_type","access_model_medical_procedure_type","model_medical_procedure_type","transmedical_proceso_base.transmedical_module",1,1,1,1
 "access_medical_copago_limit","access_medical_copago_limit","model_medical_copago_limit","transmedical_proceso_base.transmedical_module",1,1,1,1
+"access_account_type_credit_card","access_account_type_credit_card","model_account_type_credit_card","transmedical_proceso_base.transmedical_module",1,1,1,1

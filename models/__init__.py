@@ -15,3 +15,4 @@ from . import account_move
 from . import report_invoice_xlsx
 from . import product_product
 from . import medical_coverage_plan
+from . import res_partner_bank

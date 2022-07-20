@@ -15,6 +15,7 @@
         "contract",
         "partner_contact_birthdate",
         "l10n_ec_reports",
+        "l10n_ec_payment_export",
     ],
     "data": [
         "security/groups.xml",
@@ -47,6 +48,7 @@
         "views/medical_coverage_plan_view.xml",
         "views/medical_copago_limit_view.xml",
         "views/medical_liquidation_invoice_document_view.xml",
+        "views/account_credit_card_type.xml",
     ],
     "demo": [],
     "installable": True,

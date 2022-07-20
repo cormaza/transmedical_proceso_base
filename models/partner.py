@@ -15,6 +15,7 @@ class ResPartner(models.Model):
     liquidation_ids = fields.One2many("medical.liquidation", "partner_id", string="Liquidaciones")
     count_liquidation = fields.Integer("Count Liquidation", compute="_compute_count_liquidation")
     relationship_id = fields.Many2one("medical.relationship", "Relationship")
+    medical_diagnostic_id = fields.Many2one("medical.diagnostic", string="Medical Diagnostic")
 
     def action_show_liquidation_ids(self):
         self.ensure_one()
@@ -37,8 +38,8 @@ class ResPartner(models.Model):
         for rec in self:
             rec.count_liquidation = len(rec.liquidation_ids)
 
-    @api.depends("birth_date")
+    @api.depends("birthdate_date")
     def _compute_calculate_age(self):
         for record in self:
             ahora = date.today()
-            record.age = relativedelta(ahora, record.birth_date).years
+            record.age = relativedelta(ahora, record.birthdate_date).years
